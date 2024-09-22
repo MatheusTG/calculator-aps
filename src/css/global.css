@@ -28,4 +28,24 @@ button {
   /* background: linear-gradient(100deg, var(--purple-300), var(--purple-600)); */
   background-image: url("../img/math.png");
   background-position: -80px -180px;
+  overflow: hidden;
+}
+
+.wrapper::before {
+  content: "";
+  display: block;
+  height: 100vh;
+  width: 1000px;
+  background-color: red;
+  opacity: 0.1;
+  transform: translateX(-1000px);
+  filter: blur(200px);
+  z-index: -1;
+  animation: shineAnimation 15s linear infinite;
+}
+
+@keyframes shineAnimation {
+  to {
+    transform: translateX(calc(100vw));
+  }
 }

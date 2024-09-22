@@ -4,6 +4,7 @@
   border-radius: 2rem;
   box-shadow: 8px 4px 0 0px var(--purple-700),
     12px 6px 16px var(--shadow-color-dark);
+  z-index: 1;
 
   position: absolute;
   top: 50%;
