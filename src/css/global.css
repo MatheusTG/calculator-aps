@@ -1,0 +1,31 @@
+:root {
+  --white: #fff;
+  --black: #000;
+
+  --shadow-color-dark: rgba(0, 0, 0, 0.5);
+  --shadow-color-light: rgba(255, 255, 255, 0.5);
+
+  --purple-100: #d7caff;
+  --purple-300: #612fff;
+  --purple-500: #5a31e3;
+  --purple-600: #4021ab;
+  --purple-700: #2e1e67;
+}
+
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+
+button {
+  border: 0px;
+}
+
+.wrapper {
+  width: 100vw;
+  height: 100vh;
+  /* background: linear-gradient(100deg, var(--purple-300), var(--purple-600)); */
+  background-image: url("../img/math.png");
+  background-position: -80px -180px;
+}
