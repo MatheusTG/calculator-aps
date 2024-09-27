@@ -13,56 +13,73 @@
 <body>
   <article class="wrapper">
     <div class="calculator">
-      <div class="display"></div>
+      <div class="display display-on"></div>
       <div class="button-container">
-        <button class="button">AC</button>
-        <button class="button">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <button class="button button-on-ce button-long-text" data-value="ON/CE" data-button="CONTROLADOR">
+          ON
+        </button>
+
+        <div class="button-function-container">
+          <span>MRC</span>
+          <button class="button button-function" data-value="MRC" data-button="CONTROLADOR" />
+        </div>
+        <div class="button-function-container">
+          <span>M-</span>
+          <button class="button button-function" data-value="M-" data-button="CONTROLADOR" />
+        </div>
+        <div class="button-function-container">
+          <span>M+</span>
+          <button class="button button-function" data-value="M+" data-button="CONTROLADOR" />
+        </div>
+
+        <button class="button button-long-text" data-value="OFF" data-button="CONTROLADOR">OFF</button>
+        <button class="button" data-value="SQUARE-ROOT" data-button="OPERACAO">
+          <svg data-img="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
             <title>square-root</title>
-            <path fill="var(--purple-100)" d="M11.76,16.83L14.59,14L11.76,11.17L13.17,9.76L16,12.59L18.83,9.76L20.24,11.17L17.41,14L20.24,16.83L18.83,18.24L16,15.41L13.17,18.24L11.76,16.83M2,11H5V11H5L7.29,16.4L10,6H22V8H11.55L8.68,19H6.22L3.68,13H2V11Z" />
+            <path data-img="true" fill="var(--purple-100)" d="M11.76,16.83L14.59,14L11.76,11.17L13.17,9.76L16,12.59L18.83,9.76L20.24,11.17L17.41,14L20.24,16.83L18.83,18.24L16,15.41L13.17,18.24L11.76,16.83M2,11H5V11H5L7.29,16.4L10,6H22V8H11.55L8.68,19H6.22L3.68,13H2V11Z" />
           </svg>
         </button>
-        <button class="button">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 18" width="24" height="24">
+        <button class="button" data-value="PERCENT" data-button="OPERACAO">
+          <svg data-img="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 18" width="24" height="24">
             <title>percent</title>
-            <path fill="var(--purple-100)" d="M18.5,3.5L3.5,18.5L5.5,20.5L20.5,5.5M7,4A3,3 0 0,0 4,7A3,3 0 0,0 7,10A3,3 0 0,0 10,7A3,3 0 0,0 7,4M17,14A3,3 0 0,0 14,17A3,3 0 0,0 17,20A3,3 0 0,0 20,17A3,3 0 0,0 17,14Z" />
+            <path data-img="true" fill="var(--purple-100)" d="M18.5,3.5L3.5,18.5L5.5,20.5L20.5,5.5M7,4A3,3 0 0,0 4,7A3,3 0 0,0 7,10A3,3 0 0,0 10,7A3,3 0 0,0 7,4M17,14A3,3 0 0,0 14,17A3,3 0 0,0 17,20A3,3 0 0,0 20,17A3,3 0 0,0 17,14Z" />
           </svg>
         </button>
-        <button class="button">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <button class="button" data-value="DIVISION" data-button="OPERACAO">
+          <svg data-img="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
             <title>division</title>
-            <path fill="var(--purple-100)" d="M19,13H5V11H19V13M12,5A2,2 0 0,1 14,7A2,2 0 0,1 12,9A2,2 0 0,1 10,7A2,2 0 0,1 12,5M12,15A2,2 0 0,1 14,17A2,2 0 0,1 12,19A2,2 0 0,1 10,17A2,2 0 0,1 12,15Z" />
+            <path data-img="true" fill="var(--purple-100)" d="M19,13H5V11H19V13M12,5A2,2 0 0,1 14,7A2,2 0 0,1 12,9A2,2 0 0,1 10,7A2,2 0 0,1 12,5M12,15A2,2 0 0,1 14,17A2,2 0 0,1 12,19A2,2 0 0,1 10,17A2,2 0 0,1 12,15Z" />
           </svg>
         </button>
 
-        <button class="button">7</button>
-        <button class="button">8</button>
-        <button class="button">9</button>
-        <button class="button">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 18" width="24" height="24">
+        <button class="button" data-value="7" data-button="NUMERICO">7</button>
+        <button class="button" data-value="8" data-button="NUMERICO">8</button>
+        <button class="button" data-value="9" data-button="NUMERICO">9</button>
+        <button class="button" data-value="MULTIPLICATION" data-button="OPERACAO">
+          <svg data-img="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 18" width="24" height="24">
             <title>window-close</title>
-            <path fill="var(--purple-100)" d="M13.46,12L19,17.54V19H17.54L12,13.46L6.46,19H5V17.54L10.54,12L5,6.46V5H6.46L12,10.54L17.54,5H19V6.46L13.46,12Z" />
+            <path data-img="true" fill="var(--purple-100)" d="M13.46,12L19,17.54V19H17.54L12,13.46L6.46,19H5V17.54L10.54,12L5,6.46V5H6.46L12,10.54L17.54,5H19V6.46L13.46,12Z" />
           </svg>
         </button>
 
-        <button class="button">4</button>
-        <button class="button">5</button>
-        <button class="button">6</button>
-        <button class="button">-</button>
+        <button class="button" data-value="4" data-button="NUMERICO">4</button>
+        <button class="button" data-value="5" data-button="NUMERICO">5</button>
+        <button class="button" data-value="6" data-button="NUMERICO">6</button>
+        <button class="button" data-value="-" data-button="operacao">-</button>
 
-        <button class="button">1</button>
-        <button class="button">2</button>
-        <button class="button">3</button>
-        <button class="button">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 18" width="24" height="24">
+        <button class="button" data-value="1" data-button="NUMERICO">1</button>
+        <button class="button" data-value="2" data-button="NUMERICO">2</button>
+        <button class="button" data-value="3" data-button="NUMERICO">3</button>
+        <button class="button" data-value="SOMA" data-button="OPERACAO">
+          <svg data-img="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 18" width="24" height="24">
             <title>plus</title>
-            <path fill="var(--purple-100)" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
+            <path data-img="true" fill="var(--purple-100)" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
           </svg>
         </button>
 
-        <button class="button col-span-2">0</button>
-        <button class="button">.</button>
-        <button class="button">=</button>
+        <button class="button col-span-2" data-value="0" data-button="NUMERICO">0</button>
+        <button class="button" data-value="." data-button="CONTROLADOR">.</button>
+        <button class="button" data-value="EQUAL" data-button="CONTROLADOR">=</button>
       </div>
     </div>
   </article>
