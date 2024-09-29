@@ -1,7 +1,5 @@
 import { Cpu } from "./Cpu";
 
-type TipoTeclas = "NUMERICO" | "OPERACAO" | "CONTROLADOR";
-
 export class Keyboard {
   buttons: HTMLButtonElement[];
   Cpu: Cpu;
@@ -14,13 +12,6 @@ export class Keyboard {
 
     this.bindEvents();
     this.addKeyEvents();
-  }
-
-  adicionarFuncoes(tipo: TipoTeclas) {
-    switch (tipo) {
-      case "NUMERICO":
-        return 2;
-    }
   }
 
   onPress(event: MouseEvent) {
@@ -37,8 +28,9 @@ export class Keyboard {
 
     if (button instanceof HTMLButtonElement && button.dataset.button) {
       // @ts-ignore
-      this.adicionarFuncoes(button.dataset.button);
-      console.log(button.dataset.button, "=>", button.dataset.value);
+      this.Cpu.adicionarFuncoes(button);
+
+      // console.log(button.dataset.button, "=>", button.dataset.value);
     }
   }
 
