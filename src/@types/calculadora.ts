@@ -1,0 +1,65 @@
+export enum DigitoTipo {
+  ZERO = 0,
+  UM,
+  DOIS,
+  TRÊS,
+  QUATRO,
+  CINCO,
+  SEIS,
+  SETE,
+  OITO,
+  NOVE,
+}
+
+export enum OperaçãoTipo {
+  SOMA,
+  SUBTRAÇÃO,
+  MULTIPLICAÇÃO,
+  DIVISÃO,
+  RAIZ_QUADRADA,
+  PERCENTUAL,
+}
+
+export enum ControleTipo {
+  DESATIVAÇÃO,
+  ATIVAÇÃO_LIMPEZA_ERRO,
+  MEMÓRIA_LEITURA_LIMPEZA,
+  MEMÓRIA_SOMA,
+  MEMÓRIA_SUBTRAÇÃO,
+  SEPARADOR_DECIMAL,
+}
+
+export interface Tela {
+  mostre(digito: DigitoTipo): void;
+  limpe(): void;
+}
+
+export interface TecladoTipo {
+  digiteDigito(digito: DigitoTipo): void;
+  digiteOperacao(operação: OperaçãoTipo): void;
+  digiteControle(controle: ControleTipo): void;
+
+  definaCpu(cpu: CpuTipo): void;
+  obtenhaCpu(): CpuTipo;
+}
+
+export interface CpuTipo {
+  recebaDigito(digito: DigitoTipo): void;
+  recebaOperacao(operação: OperaçãoTipo): void;
+  recebaControle(controle: ControleTipo): void;
+  reinicie(): void;
+
+  definaTela(tela: Tela): void;
+  obtenhaTela(): Tela;
+}
+
+export interface Calculadora {
+  definaTela(tela: Tela): void;
+  obtenhaTela(): Tela;
+
+  definaCpu(cpu: CpuTipo): void;
+  obtenhaCpu(): CpuTipo;
+
+  definaTeclado(teclado: TecladoTipo): void;
+  obtenhaTeclado(): TecladoTipo;
+}

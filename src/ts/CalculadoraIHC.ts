@@ -1,13 +1,19 @@
+import { CpuTipo, TecladoTipo } from "../@types/calculadora";
 import { Cpu } from "./Cpu";
+import { Tela } from "./Tela";
+import { Teclado } from "./Teclado";
 
 export class CalculadoraIHC {
   botoes: HTMLButtonElement[];
-  Cpu: Cpu;
-  constructor(botaoSeletor: string, Cpu: Cpu) {
+  Teclado: TecladoTipo;
+  constructor(botaoSeletor: string) {
     const buttons = document.querySelectorAll<HTMLButtonElement>(botaoSeletor);
     // Convertendo a NodeList para lista
     this.botoes = Array.from(buttons);
-    this.Cpu = Cpu;
+
+    const tela = new Tela();
+    const cpu = new Cpu(tela) as CpuTipo;
+    this.Teclado = new Teclado(cpu);
 
     this.bindEvents();
     this.addKeyEvents();
@@ -26,10 +32,6 @@ export class CalculadoraIHC {
     }
 
     if (botao instanceof HTMLButtonElement && botao.dataset.button) {
-      // @ts-ignore
-      this.Cpu.adicionarFuncoes(botao);
-
-      // console.log(button.dataset.button, "=>", button.dataset.value);
     }
   }
 
