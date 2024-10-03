@@ -1,18 +1,5 @@
-import { Tela } from "./Display";
+import { CpuTipo } from "../@types/calculadora";
 
-export class Cpu {
-  tela: Tela;
-  constructor(tela: Tela) {
-    this.tela = tela;
-  }
+export class Cpu implements CpuTipo {
 
-  adicionarFuncoes(button: HTMLButtonElement) {
-    switch (button.dataset.button) {
-      case "NUMERICO":
-        console.log(button.dataset.value);
-        return 2;
-      default:
-        return null;
-    }
-  }
 }
