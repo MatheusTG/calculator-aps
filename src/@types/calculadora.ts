@@ -40,7 +40,7 @@ export interface TecladoTipo {
   digiteControle(controle: ControleTipo): void;
 
   definaCpu(cpu: CpuTipo): void;
-  obtenhaCpu(): CpuTipo;
+  obtenhaCpu(): CpuTipo | null;
 }
 
 export interface CpuTipo {

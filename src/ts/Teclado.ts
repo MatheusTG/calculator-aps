@@ -7,21 +7,21 @@ import {
 } from "../@types/calculadora";
 
 export class Teclado implements TecladoTipo {
-  cpu: CpuTipo;
-  constructor(cpu: CpuTipo) {
-    this.cpu = cpu;
+  cpu: CpuTipo | null;
+  constructor() {
+    this.cpu = null;
   }
 
   digiteDigito(digito: DigitoTipo) {
-    console.log(digito);
+    console.log("digito", digito);
   }
 
   digiteOperacao(operação: OperaçãoTipo) {
-    console.log(operação);
+    console.log("operação", operação);
   }
 
   digiteControle(controle: ControleTipo) {
-    console.log(controle);
+    console.log("controle", controle);
   }
 
   /* associação de Teclado -> Cpu */

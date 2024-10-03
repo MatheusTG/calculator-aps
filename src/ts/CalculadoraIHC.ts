@@ -1,7 +1,35 @@
-import { CpuTipo, TecladoTipo } from "../@types/calculadora";
+import {
+  ControleTipo,
+  CpuTipo,
+  DigitoTipo,
+  OperaçãoTipo,
+  TecladoTipo,
+} from "../@types/calculadora";
 import { Cpu } from "./Cpu";
 import { Tela } from "./Tela";
 import { Teclado } from "./Teclado";
+
+export type TeclaTipo<T> = HTMLButtonElement & {
+  dataset: {
+    value: T;
+  };
+};
+
+function isDigito(botao: HTMLButtonElement): botao is TeclaTipo<DigitoTipo> {
+  return botao.dataset.button === "NUMERICO";
+}
+
+function isOperacao(
+  botao: HTMLButtonElement
+): botao is TeclaTipo<OperaçãoTipo> {
+  return botao.dataset.button === "OPERACAO";
+}
+
+function isControle(
+  botao: HTMLButtonElement
+): botao is TeclaTipo<ControleTipo> {
+  return botao.dataset.button === "CONTROLADOR";
+}
 
 export class CalculadoraIHC {
   botoes: HTMLButtonElement[];
@@ -12,8 +40,9 @@ export class CalculadoraIHC {
     this.botoes = Array.from(buttons);
 
     const tela = new Tela();
+    // @ts-ignore
     const cpu = new Cpu(tela) as CpuTipo;
-    this.Teclado = new Teclado(cpu);
+    this.Teclado = new Teclado();
 
     this.bindEvents();
     this.addKeyEvents();
@@ -32,6 +61,9 @@ export class CalculadoraIHC {
     }
 
     if (botao instanceof HTMLButtonElement && botao.dataset.button) {
+      if (isDigito(botao)) this.Teclado.digiteDigito(botao.dataset.value);
+      if (isOperacao(botao)) this.Teclado.digiteOperacao(botao.dataset.value);
+      if (isControle(botao)) this.Teclado.digiteControle(botao.dataset.value);
     }
   }
 
