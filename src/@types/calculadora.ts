@@ -29,7 +29,7 @@ export enum ControleTipo {
   SEPARADOR_DECIMAL,
 }
 
-export interface Tela {
+export interface TelaTipo {
   mostre(digito: DigitoTipo): void;
   limpe(): void;
 }
@@ -49,13 +49,13 @@ export interface CpuTipo {
   recebaControle(controle: ControleTipo): void;
   reinicie(): void;
 
-  definaTela(tela: Tela): void;
-  obtenhaTela(): Tela;
+  definaTela(tela: TelaTipo): void;
+  obtenhaTela(): TelaTipo;
 }
 
 export interface Calculadora {
-  definaTela(tela: Tela): void;
-  obtenhaTela(): Tela;
+  definaTela(tela: TelaTipo): void;
+  obtenhaTela(): TelaTipo;
 
   definaCpu(cpu: CpuTipo): void;
   obtenhaCpu(): CpuTipo;
