@@ -1,4 +1,4 @@
 import "./style.css";
 import { CalculadoraIHC } from "./ts/CalculadoraIHC";
 
-new CalculadoraIHC("[data-button]");
+new CalculadoraIHC("[data-button]", "[data-tela]");

@@ -13,21 +13,21 @@ export class Teclado implements TecladoTipo {
   }
 
   digiteDigito(digito: DigitoTipo) {
-    console.log("digito", digito);
+    this.cpu?.recebaDigito(digito);
   }
 
   digiteOperacao(operação: OperaçãoTipo) {
-    console.log("operação", operação);
+    this.cpu?.recebaOperacao(operação);
   }
 
   digiteControle(controle: ControleTipo) {
-    console.log("controle", controle);
+    this.cpu?.recebaControle(controle);
   }
 
   /* associação de Teclado -> Cpu */
 
   definaCpu(cpu: CpuTipo) {
-    console.log(cpu);
+    this.cpu = cpu;
   }
 
   obtenhaCpu() {

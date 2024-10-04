@@ -27,6 +27,7 @@ export enum ControleTipo {
   MEMÓRIA_SOMA,
   MEMÓRIA_SUBTRAÇÃO,
   SEPARADOR_DECIMAL,
+  IGUAL,
 }
 
 export interface TelaTipo {
@@ -50,10 +51,10 @@ export interface CpuTipo {
   reinicie(): void;
 
   definaTela(tela: TelaTipo): void;
-  obtenhaTela(): TelaTipo;
+  obtenhaTela(): TelaTipo | null;
 }
 
-export interface Calculadora {
+export interface CalculadoraTipo {
   definaTela(tela: TelaTipo): void;
   obtenhaTela(): TelaTipo;
 

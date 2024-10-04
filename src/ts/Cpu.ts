@@ -4,31 +4,41 @@ import {
   DigitoTipo,
   OperaçãoTipo,
   TelaTipo,
-} from '../@types/calculadora';
+} from "../@types/calculadora";
 
 export class Cpu implements CpuTipo {
-  tela: TelaTipo;
-  constructor(tela: TelaTipo) {
-    this.tela = tela;
+  tela: TelaTipo | null;
+
+  private ligado: boolean;
+  constructor() {
+    this.tela = null;
+    this.ligado = false;
   }
 
   recebaDigito(digito: DigitoTipo) {
-    console.log(digito);
+    if (this.ligado) {
+      console.log(digito);
+    }
   }
 
   recebaOperacao(operação: OperaçãoTipo) {
-    console.log(operação);
+    if (this.ligado) {
+      console.log(operação);
+    }
   }
 
   recebaControle(controle: ControleTipo) {
-    console.log(controle);
+    if (Number(controle) === ControleTipo.ATIVAÇÃO_LIMPEZA_ERRO) {
+      this.tela?.mostre(0);
+      this.ligado = true;
+    }
   }
 
   reinicie() {
     console.log(Cpu);
   }
   definaTela(tela: TelaTipo): void {
-    console.log(tela);
+    this.tela = tela;
   }
 
   obtenhaTela() {

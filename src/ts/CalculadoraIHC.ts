@@ -1,13 +1,13 @@
 import {
   ControleTipo,
-  CpuTipo,
   DigitoTipo,
   OperaçãoTipo,
   TecladoTipo,
 } from "../@types/calculadora";
+import { TelaB5Tipo } from "../@types/ihc";
 import { Cpu } from "./Cpu";
-import { Tela } from "./Tela";
 import { Teclado } from "./Teclado";
+import { TelaB5 } from "./TelaB5";
 
 export type TeclaTipo<T> = HTMLButtonElement & {
   dataset: {
@@ -34,15 +34,23 @@ function isControle(
 export class CalculadoraIHC {
   botoes: HTMLButtonElement[];
   Teclado: TecladoTipo;
-  constructor(botaoSeletor: string) {
+  Tela: TelaB5Tipo;
+
+  telaElemento: HTMLDivElement | null;
+  ligado: boolean;
+  constructor(botaoSeletor: string, telaSelector: string) {
     const buttons = document.querySelectorAll<HTMLButtonElement>(botaoSeletor);
+    this.telaElemento = document.querySelector<HTMLDivElement>(telaSelector);
     // Convertendo a NodeList para lista
     this.botoes = Array.from(buttons);
 
-    const tela = new Tela();
-    // @ts-ignore
-    const cpu = new Cpu(tela) as CpuTipo;
+    this.ligado = false;
+
+    this.Tela = new TelaB5();
+    const cpu = new Cpu();
+    cpu.definaTela(this.Tela);
     this.Teclado = new Teclado();
+    this.Teclado.definaCpu(cpu);
 
     this.bindEvents();
     this.addKeyEvents();
@@ -64,6 +72,12 @@ export class CalculadoraIHC {
       if (isDigito(botao)) this.Teclado.digiteDigito(botao.dataset.value);
       if (isOperacao(botao)) this.Teclado.digiteOperacao(botao.dataset.value);
       if (isControle(botao)) this.Teclado.digiteControle(botao.dataset.value);
+    }
+
+    // ligando a calculadora caso ela esteja desligada
+    if (!this.ligado && this.Tela.lista.length) {
+      this.ligado = true;
+      this.telaElemento?.classList.add("display-on");
     }
   }
 
