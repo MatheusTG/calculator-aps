@@ -76,8 +76,15 @@ export class CalculadoraIHC {
 
     // ligando a calculadora caso ela esteja desligada
     if (!this.ligado && this.Tela.lista.length) {
+      this.Tela.lista.pop();
       this.ligado = true;
       this.telaElemento?.classList.add("display-on");
+    }
+
+    // Adicionando os números na tela
+    if (this.telaElemento) {
+      console.log(this.Tela.lista);
+      this.telaElemento.innerText = this.Tela.lista.join("");
     }
   }
 

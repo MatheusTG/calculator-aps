@@ -17,7 +17,7 @@ export class Cpu implements CpuTipo {
 
   recebaDigito(digito: DigitoTipo) {
     if (this.ligado) {
-      console.log(digito);
+      this.tela?.mostre(digito);
     }
   }
 
