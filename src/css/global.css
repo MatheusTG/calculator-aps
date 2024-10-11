@@ -12,6 +12,13 @@
   --purple-700: #2e1e67;
 }
 
+@font-face {
+  font-family: 'Calculator';
+  src: url('../fonts/Calculator.ttf') format('woff2');
+      
+  font-weight: normal;
+  font-style: normal;
+}
 * {
   margin: 0px;
   padding: 0px;
