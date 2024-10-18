@@ -1,10 +1,11 @@
 import { Controle, Cpu, Digito, Operação, Tela } from "../@types/calculadora";
+import { Numero } from "./NumeroB5";
 
 export class CpuB5 implements Cpu {
   tela: Tela | undefined;
-  primeiraLista: Digito[];
-  segundaLista: Digito[];
-  primeiroNumero: boolean;
+  primeiroNumero: Numero;
+  segundoNumero: Numero;
+  ePrimeiroNumero: boolean;
   operando: string;
 
   ligado: boolean;
@@ -12,38 +13,38 @@ export class CpuB5 implements Cpu {
     this.tela = undefined;
     this.ligado = false;
 
-    this.primeiraLista = [];
-    this.segundaLista = [];
-    this.primeiroNumero = true;
+    this.primeiroNumero = new Numero();
+    this.segundoNumero = new Numero();
+    this.ePrimeiroNumero = true;
     this.operando = "";
   }
 
   private limpar() {
     this.tela?.limpe();
-    this.primeiraLista = [];
-    this.segundaLista = [];
-    this.primeiroNumero = true;
+    this.primeiroNumero.digitos = [];
+    this.segundoNumero.digitos = [];
+    this.ePrimeiroNumero = true;
   }
 
   recebaDigito(digito: Digito) {
     if (this.ligado) {
-      if (!this.primeiroNumero && this.segundaLista.length === 0) {
+      if (!this.ePrimeiroNumero && this.segundoNumero?.digitos.length === 0) {
         this.tela?.limpe();
       }
 
       this.tela?.mostre(digito);
 
-      if (this.primeiroNumero) {
-        this.primeiraLista.push(digito);
+      if (this.ePrimeiroNumero) {
+        this.primeiroNumero.digitos.push(digito);
       } else {
-        this.segundaLista.push(digito);
+        this.segundoNumero.digitos.push(digito);
       }
     }
   }
 
   recebaOperacao(operação: Operação) {
     if (this.ligado) {
-      this.primeiroNumero = false;
+      this.ePrimeiroNumero = false;
 
       switch (operação) {
         case Operação.SOMA:
@@ -61,7 +62,7 @@ export class CpuB5 implements Cpu {
         case Operação.RAIZ_QUADRADA:
           this.tela?.limpe();
           this.tela?.mostre(
-            eval(`${Number(this.primeiraLista.join(""))}**0.5`)
+            eval(`${Number(this.primeiroNumero.digitos.join(""))}**0.5`)
           );
           return;
         case Operação.PERCENTUAL:
@@ -81,8 +82,8 @@ export class CpuB5 implements Cpu {
 
     if (Number(controle) === Controle.IGUAL) {
       console.log(this.operando);
-      const num1 = Number(this.primeiraLista.join(""));
-      const num2 = Number(this.segundaLista.join(""));
+      const num1 = Number(this.primeiroNumero.digitos.join(""));
+      const num2 = Number(this.segundoNumero.digitos.join(""));
 
       console.log(`${num1}${this.operando}${num2}`);
 
