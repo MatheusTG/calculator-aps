@@ -1,12 +1,13 @@
 import {
-  ControleTipo,
-  DigitoTipo,
-  OperaçãoTipo,
-  TecladoTipo,
+  Controle,
+  Cpu,
+  Digito,
+  Operação,
+  Teclado,
+  Tela,
 } from "../@types/calculadora";
-import { TelaB5Tipo } from "../@types/ihc";
-import { Cpu } from "./Cpu";
-import { Teclado } from "./Teclado";
+import { CpuB5 } from "./CpuB5";
+import { TecladoB5 } from "./TecladoB5";
 import { TelaB5 } from "./TelaB5";
 
 export type TeclaTipo<T> = HTMLButtonElement & {
@@ -15,26 +16,23 @@ export type TeclaTipo<T> = HTMLButtonElement & {
   };
 };
 
-function isDigito(botao: HTMLButtonElement): botao is TeclaTipo<DigitoTipo> {
+function isDigito(botao: HTMLButtonElement): botao is TeclaTipo<Digito> {
   return botao.dataset.button === "NUMERICO";
 }
 
-function isOperacao(
-  botao: HTMLButtonElement
-): botao is TeclaTipo<OperaçãoTipo> {
+function isOperacao(botao: HTMLButtonElement): botao is TeclaTipo<Operação> {
   return botao.dataset.button === "OPERACAO";
 }
 
-function isControle(
-  botao: HTMLButtonElement
-): botao is TeclaTipo<ControleTipo> {
+function isControle(botao: HTMLButtonElement): botao is TeclaTipo<Controle> {
   return botao.dataset.button === "CONTROLADOR";
 }
 
 export class CalculadoraIHC {
   botoes: HTMLButtonElement[];
-  Teclado: TecladoTipo;
-  Tela: TelaB5Tipo;
+  Teclado: Teclado;
+  Tela: Tela & { lista: Digito[] };
+  cpu: Cpu & { ligado: boolean };
 
   telaElemento: HTMLDivElement | null;
   ligado: boolean;
@@ -47,16 +45,16 @@ export class CalculadoraIHC {
     this.ligado = false;
 
     this.Tela = new TelaB5();
-    const cpu = new Cpu();
-    cpu.definaTela(this.Tela);
-    this.Teclado = new Teclado();
-    this.Teclado.definaCpu(cpu);
+    this.cpu = new CpuB5();
+    this.cpu.definaTela(this.Tela);
+    this.Teclado = new TecladoB5();
+    this.Teclado.definaCpu(this.cpu);
 
     this.bindEvents();
     this.addKeyEvents();
   }
 
-  aoPrecionar(event: MouseEvent) {
+  aoPressionar(event: MouseEvent) {
     let botao = event.target;
 
     if (botao instanceof SVGElement && botao.dataset.img) {
@@ -81,21 +79,28 @@ export class CalculadoraIHC {
       this.telaElemento?.classList.add("display-on");
     }
 
-    // Adicionando os números na tela
-    if (this.telaElemento) {
-      console.log(this.Tela.lista);
-      this.telaElemento.innerText = this.Tela.lista.join("");
+    if (this.ligado)
+      if (this.telaElemento) {
+        // Adicionando os números na tela
+        if (Number(this.Tela.lista[0]) === 0) {
+          this.Tela.lista.shift();
+        }
+        this.telaElemento.innerText = this.Tela.lista.join("");
+      }
+    if (!this.cpu.ligado) {
+      this.ligado = false;
+      this.telaElemento?.classList.remove("display-on");
     }
   }
 
   bindEvents() {
-    this.aoPrecionar = this.aoPrecionar.bind(this);
+    this.aoPressionar = this.aoPressionar.bind(this);
   }
 
   addKeyEvents() {
     // Colocando evento de click em todos os botões
     this.botoes.forEach((botao) => {
-      botao.addEventListener("click", this.aoPrecionar);
+      botao.addEventListener("click", this.aoPressionar);
     });
   }
 }

@@ -1,4 +1,4 @@
-export enum DigitoTipo {
+export enum Digito {
   ZERO = 0,
   UM,
   DOIS,
@@ -11,7 +11,7 @@ export enum DigitoTipo {
   NOVE,
 }
 
-export enum OperaçãoTipo {
+export enum Operação {
   SOMA,
   SUBTRAÇÃO,
   MULTIPLICAÇÃO,
@@ -20,7 +20,7 @@ export enum OperaçãoTipo {
   PERCENTUAL,
 }
 
-export enum ControleTipo {
+export enum Controle {
   DESATIVAÇÃO,
   ATIVAÇÃO_LIMPEZA_ERRO,
   MEMÓRIA_LEITURA_LIMPEZA,
@@ -30,37 +30,37 @@ export enum ControleTipo {
   IGUAL,
 }
 
-export interface TelaTipo {
-  mostre(digito: DigitoTipo): void;
+export interface Tela {
+  mostre(digito: Digito): void;
   limpe(): void;
 }
 
-export interface TecladoTipo {
-  digiteDigito(digito: DigitoTipo): void;
-  digiteOperacao(operação: OperaçãoTipo): void;
-  digiteControle(controle: ControleTipo): void;
+export interface Teclado {
+  digiteDigito(digito: Digito): void;
+  digiteOperacao(operação: Operação): void;
+  digiteControle(controle: Controle): void;
 
-  definaCpu(cpu: CpuTipo): void;
-  obtenhaCpu(): CpuTipo | null;
+  definaCpu(cpu: Cpu): void;
+  obtenhaCpu(): Cpu | null;
 }
 
-export interface CpuTipo {
-  recebaDigito(digito: DigitoTipo): void;
-  recebaOperacao(operação: OperaçãoTipo): void;
-  recebaControle(controle: ControleTipo): void;
+export interface Cpu {
+  recebaDigito(digito: Digito): void;
+  recebaOperacao(operação: Operação): void;
+  recebaControle(controle: Controle): void;
   reinicie(): void;
 
-  definaTela(tela: TelaTipo): void;
-  obtenhaTela(): TelaTipo | null;
+  definaTela(tela: Tela): void;
+  obtenhaTela(): Tela | null;
 }
 
-export interface CalculadoraTipo {
-  definaTela(tela: TelaTipo): void;
-  obtenhaTela(): TelaTipo;
+export interface Calculadora {
+  definaTela(tela: Tela): void;
+  obtenhaTela(): Tela;
 
-  definaCpu(cpu: CpuTipo): void;
-  obtenhaCpu(): CpuTipo;
+  definaCpu(cpu: Cpu): void;
+  obtenhaCpu(): Cpu;
 
-  definaTeclado(teclado: TecladoTipo): void;
-  obtenhaTeclado(): TecladoTipo;
+  definaTeclado(teclado: Teclado): void;
+  obtenhaTeclado(): Teclado;
 }
