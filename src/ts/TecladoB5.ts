@@ -7,9 +7,9 @@ import {
 } from "../@types/calculadora";
 
 export class TecladoB5 implements Teclado {
-  cpu: Cpu | null;
+  cpu: Cpu | undefined;
   constructor() {
-    this.cpu = null;
+    this.cpu = undefined;
   }
 
   digiteDigito(digito: Digito) {
