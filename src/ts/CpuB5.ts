@@ -1,10 +1,10 @@
 import { Controle, Cpu, Digito, Operação, Tela } from "../@types/calculadora";
-import { Numero } from "./NumeroB5";
+import { NumeroB5 } from "./NumeroB5";
 
 export class CpuB5 implements Cpu {
   tela: Tela | undefined;
-  primeiroNumero: Numero;
-  segundoNumero: Numero;
+  primeiroNumero: NumeroB5;
+  segundoNumero: NumeroB5;
   ePrimeiroNumero: boolean;
   operando: string;
 
@@ -13,8 +13,8 @@ export class CpuB5 implements Cpu {
     this.tela = undefined;
     this.ligado = false;
 
-    this.primeiroNumero = new Numero();
-    this.segundoNumero = new Numero();
+    this.primeiroNumero = new NumeroB5();
+    this.segundoNumero = new NumeroB5();
     this.ePrimeiroNumero = true;
     this.operando = "";
   }
@@ -81,11 +81,17 @@ export class CpuB5 implements Cpu {
     }
 
     if (Number(controle) === Controle.IGUAL) {
-      console.log(this.operando);
-      const num1 = Number(this.primeiroNumero.digitos.join(""));
-      const num2 = Number(this.segundoNumero.digitos.join(""));
+      const num1Lista: (Digito | ".")[] = [...this.primeiroNumero.digitos];
+      const posicaoDecimal1 = this.primeiroNumero.posiçãoSeparadorDecimal;
+      if (posicaoDecimal1) num1Lista.splice(posicaoDecimal1, 0, ".");
 
-      console.log(`${num1}${this.operando}${num2}`);
+      const num2Lista: (Digito | ".")[] = [...this.segundoNumero.digitos];
+      const posicaoDecimal2 = this.segundoNumero.posiçãoSeparadorDecimal;
+      if (posicaoDecimal2) num2Lista.splice(posicaoDecimal2, 0, ".");
+
+      console.log(num2Lista);
+      const num1 = Number(num1Lista.join(""));
+      const num2 = Number(num2Lista.join(""));
 
       if (num1 && num2) {
         this.limpar();
@@ -96,6 +102,17 @@ export class CpuB5 implements Cpu {
     if (Number(controle) === Controle.DESATIVAÇÃO) {
       this.tela?.limpe();
       this.ligado = false;
+    }
+
+    if (Number(controle) === Controle.SEPARADOR_DECIMAL) {
+      if (this.ePrimeiroNumero) {
+        this.primeiroNumero.posiçãoSeparadorDecimal =
+          this.primeiroNumero.digitos.length;
+      } else {
+        this.segundoNumero.posiçãoSeparadorDecimal =
+          this.segundoNumero.digitos.length;
+      }
+      this.tela?.mostreSeparadorDecimal();
     }
   }
 

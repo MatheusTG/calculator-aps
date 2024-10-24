@@ -1,13 +1,13 @@
 import { Digito, Sinal, Tela } from "../@types/calculadora";
 
 export class TelaB5 implements Tela {
-  lista: Digito[];
+  lista: (string | number)[];
 
   constructor() {
     this.lista = [];
   }
   mostreSeparadorDecimal(): void {
-    throw new Error("Method not implemented.");
+    this.lista.push(".");
   }
   mostreSinal(sinal: Sinal): void {
     throw new Error("Method not implemented.");

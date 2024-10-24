@@ -1,6 +1,6 @@
 import { Digito } from "../@types/calculadora";
 
-export class Numero {
+export class NumeroB5 {
   digitos: Digito[] = [];
 
   posiçãoSeparadorDecimal: number | null = 0;
