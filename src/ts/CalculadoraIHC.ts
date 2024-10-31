@@ -31,7 +31,7 @@ function isControle(botao: HTMLButtonElement): botao is TeclaTipo<Controle> {
 export class CalculadoraIHC {
   botoes: HTMLButtonElement[];
   Teclado: Teclado;
-  Tela: Tela & { lista: Digito[] };
+  Tela: Tela & { lista: (string | number)[] };
   cpu: Cpu & { ligado: boolean };
 
   telaElemento: HTMLDivElement | null;

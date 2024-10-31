@@ -6,8 +6,21 @@ export class NumeroB5 {
   posiçãoSeparadorDecimal: number | null = 0;
 
   paraNumero(): number {
-    return 0;
+    let newDigitos: (Digito | ".")[] = [...this.digitos];
+    if (this.posiçãoSeparadorDecimal) {
+      newDigitos.splice(this.posiçãoSeparadorDecimal, 0, ".");
+    }
+
+    return Number(newDigitos.join(''));
   }
 
-  deNumero(numero: Number): void {}
+  deNumero(numero: Number): void {
+    const numeroString = numero.toString();
+
+    if (numeroString.indexOf(".") !== -1)
+      this.posiçãoSeparadorDecimal = numeroString.indexOf(".");
+
+    // @ts-ignore
+    this.digitos = numeroString.split("").filter((valor) => valor !== ".");
+  }
 }
