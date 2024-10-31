@@ -11,6 +11,9 @@ export class CpuB5 implements Cpu {
   ligado: boolean;
   memoria: number;
   resultado: string;
+
+  // Limpar tela ao digitar próximo número?
+  limparAoDigitar: boolean;
   constructor() {
     this.tela = undefined;
     this.ligado = false;
@@ -22,6 +25,8 @@ export class CpuB5 implements Cpu {
 
     this.memoria = 0;
     this.resultado = "";
+
+    this.limparAoDigitar = false;
   }
 
   private limpar() {
@@ -48,6 +53,13 @@ export class CpuB5 implements Cpu {
 
   recebaDigito(digito: Digito) {
     if (this.ligado) {
+      console.log(this.primeiroNumero);
+      console.log(this.segundoNumero);
+      if (this.limparAoDigitar) {
+        this.tela?.limpe();
+        this.limparAoDigitar = false;
+      }
+
       this.resultado = "";
 
       if (!this.ePrimeiroNumero && this.segundoNumero?.digitos.length === 0) {
@@ -163,6 +175,11 @@ export class CpuB5 implements Cpu {
         this.limpar();
         this.tela?.mostre(eval(this.resultado));
       }
+
+      this.primeiroNumero.deNumero(Number(this.resultado));
+      this.segundoNumero = new NumeroB5();
+
+      this.limparAoDigitar = true;
     }
 
     if (Number(controle) === Controle.DESATIVAÇÃO) {
@@ -189,6 +206,8 @@ export class CpuB5 implements Cpu {
         this.memoria += this.primeiroNumero.paraNumero();
       }
       this.limpar();
+
+      this.limparAoDigitar = true;
     }
 
     if (Number(controle) === Controle.MEMÓRIA_SUBTRAÇÃO) {
@@ -199,6 +218,13 @@ export class CpuB5 implements Cpu {
         this.memoria -= this.primeiroNumero.paraNumero();
       }
       this.limpar();
+
+      this.limparAoDigitar = true;
+    }
+
+    if (Number(controle) === Controle.MEMÓRIA_LEITURA_LIMPEZA) {
+      this.tela?.limpe();
+      this.tela?.mostre(this.memoria);
     }
 
     console.log(this.memoria);
