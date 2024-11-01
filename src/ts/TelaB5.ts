@@ -4,7 +4,7 @@ export class TelaB5 implements Tela {
   lista: (string | number)[];
 
   constructor() {
-    this.lista = [];
+    this.lista = ["0"];
   }
   mostreSeparadorDecimal(): void {
     this.lista.push(".");

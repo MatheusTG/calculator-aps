@@ -82,7 +82,13 @@ export class CalculadoraIHC {
     if (this.ligado)
       if (this.telaElemento) {
         // Adicionando os números na tela
-        if (Number(this.Tela.lista[0]) === 0) {
+        console.log(this.Tela.lista);
+        if (
+          this.Tela.lista.length === 1 &&
+          Number(this.Tela.lista[0] === "0")
+        ) {
+          this.telaElemento.innerText = "0";
+        } else if (Number(this.Tela.lista[0]) === 0) {
           this.Tela.lista.shift();
         }
         this.telaElemento.innerText = this.Tela.lista.join("");
