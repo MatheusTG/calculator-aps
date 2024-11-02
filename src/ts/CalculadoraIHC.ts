@@ -82,7 +82,6 @@ export class CalculadoraIHC {
     if (this.ligado)
       if (this.telaElemento) {
         // Adicionando os números na tela
-        console.log(this.Tela.lista);
         if (
           this.Tela.lista.length === 1 &&
           Number(this.Tela.lista[0] === "0")

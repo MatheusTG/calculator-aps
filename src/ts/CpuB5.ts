@@ -53,6 +53,78 @@ export class CpuB5 implements Cpu {
     this.resultado = eval(`${num1}${this.operando}${num2}`) as number;
   }
 
+  private ativacaolimpezaErro() {
+    if (this.ligado === false) this.tela?.mostre(0);
+    if (this.ligado === true) this.reinicie();
+
+    this.ligado = true;
+  }
+
+  private igual() {
+    this.calcularResultado();
+
+    if (this.resultado !== null) {
+      this.limpar();
+      this.tela?.mostre(this.resultado);
+    }
+
+    this.primeiroNumero.deNumero(Number(this.resultado));
+    this.segundoNumero = new NumeroB5();
+
+    this.limparAoDigitar = true;
+  }
+
+  private desativacao() {
+    this.tela?.limpe();
+    this.ligado = false;
+    this.memoria = 0;
+  }
+
+  private separadorDecimal() {
+    if (this.ePrimeiroNumero) {
+      this.primeiroNumero.posiçãoSeparadorDecimal =
+        this.primeiroNumero.digitos.length;
+    } else {
+      this.segundoNumero.posiçãoSeparadorDecimal =
+        this.segundoNumero.digitos.length;
+    }
+    this.tela?.mostreSeparadorDecimal();
+  }
+
+  private memoriaSoma() {
+    if (!this.ePrimeiroNumero || this.resultado) {
+      this.calcularResultado();
+      this.memoria += Number(this.resultado);
+      this.tela?.limpe();
+      this.tela?.mostre(Number(this.resultado));
+    } else if (this.ePrimeiroNumero) {
+      this.memoria += this.primeiroNumero.paraNumero();
+    }
+  }
+
+  private memoriaSubtracao() {
+    if (!this.ePrimeiroNumero || this.resultado) {
+      this.calcularResultado();
+      this.memoria -= Number(this.resultado);
+    } else if (this.ePrimeiroNumero) {
+      this.memoria -= this.primeiroNumero.paraNumero();
+    }
+    // this.limpar();
+
+    this.limparAoDigitar = true;
+  }
+
+  private memoriaLeituraLimpeza() {
+    if (this.limparMemoria) {
+      this.memoria = 0;
+      this.limparMemoria = false;
+    }
+
+    this.tela?.limpe();
+    this.tela?.mostre(this.memoria);
+    this.limparMemoria = true;
+  }
+
   recebaDigito(digito: Digito) {
     if (this.ligado) {
       if (this.limparAoDigitar) {
@@ -162,80 +234,29 @@ export class CpuB5 implements Cpu {
   }
 
   recebaControle(controle: Controle) {
-    if (Number(controle) === Controle.ATIVAÇÃO_LIMPEZA_ERRO) {
-      if (this.ligado === false) this.tela?.mostre(0);
-      if (this.ligado === true) this.reinicie();
-
-      this.ligado = true;
+    switch (Number(controle)) {
+      case Controle.ATIVAÇÃO_LIMPEZA_ERRO:
+        this.ativacaolimpezaErro();
+        break;
+      case Controle.IGUAL:
+        this.igual();
+        break;
+      case Controle.DESATIVAÇÃO:
+        this.desativacao();
+        break;
+      case Controle.SEPARADOR_DECIMAL:
+        this.separadorDecimal();
+        break;
+      case Controle.MEMÓRIA_SOMA:
+        this.memoriaSoma();
+        break;
+      case Controle.MEMÓRIA_SUBTRAÇÃO:
+        this.memoriaSubtracao();
+        break;
+      case Controle.MEMÓRIA_LEITURA_LIMPEZA:
+        this.memoriaLeituraLimpeza();
+        break;
     }
-
-    if (Number(controle) === Controle.IGUAL) {
-      this.calcularResultado();
-
-      console.log(this.resultado);
-      if (this.resultado !== null) {
-        this.limpar();
-        this.tela?.mostre(this.resultado);
-      }
-
-      this.primeiroNumero.deNumero(Number(this.resultado));
-      this.segundoNumero = new NumeroB5();
-
-      this.limparAoDigitar = true;
-    }
-
-    if (Number(controle) === Controle.DESATIVAÇÃO) {
-      this.tela?.limpe();
-      this.ligado = false;
-      this.memoria = 0;
-    }
-
-    if (Number(controle) === Controle.SEPARADOR_DECIMAL) {
-      if (this.ePrimeiroNumero) {
-        this.primeiroNumero.posiçãoSeparadorDecimal =
-          this.primeiroNumero.digitos.length;
-      } else {
-        this.segundoNumero.posiçãoSeparadorDecimal =
-          this.segundoNumero.digitos.length;
-      }
-      this.tela?.mostreSeparadorDecimal();
-    }
-
-    if (Number(controle) === Controle.MEMÓRIA_SOMA) {
-      if (!this.ePrimeiroNumero || this.resultado) {
-        this.calcularResultado();
-        this.memoria += Number(this.resultado);
-        this.tela?.limpe();
-        this.tela?.mostre(Number(this.resultado));
-      } else if (this.ePrimeiroNumero) {
-        this.memoria += this.primeiroNumero.paraNumero();
-      }
-    }
-
-    if (Number(controle) === Controle.MEMÓRIA_SUBTRAÇÃO) {
-      if (!this.ePrimeiroNumero || this.resultado) {
-        this.calcularResultado();
-        this.memoria -= Number(this.resultado);
-      } else if (this.ePrimeiroNumero) {
-        this.memoria -= this.primeiroNumero.paraNumero();
-      }
-      // this.limpar();
-
-      this.limparAoDigitar = true;
-    }
-
-    if (Number(controle) === Controle.MEMÓRIA_LEITURA_LIMPEZA) {
-      if (this.limparMemoria) {
-        this.memoria = 0;
-        this.limparMemoria = false;
-      }
-
-      this.tela?.limpe();
-      this.tela?.mostre(this.memoria);
-      this.limparMemoria = true;
-    }
-
-    console.log(this.memoria);
   }
 
   reinicie() {
