@@ -58,6 +58,13 @@ export class CpuB5 implements Cpu {
     this.resultado = eval(`${num1}${this.operando}${num2}`) as number;
   }
 
+  private valorParaPrimeiroNumero(valor: number) {
+    this.limparAoDigitar = true;
+    this.primeiroNumero.deNumero(valor);
+    console.log(this.primeiroNumero.digitos);
+    this.primeiroNumero.digitos.forEach((valor) => this.tela?.mostre(valor));
+  }
+
   // ** Métodos de Controle
   private ativacaolimpezaErro() {
     if (this.ligado === false) this.tela?.mostre(0);
@@ -71,9 +78,7 @@ export class CpuB5 implements Cpu {
 
     this.limpar();
     if (this.resultado !== null) {
-      this.limparAoDigitar = true;
-      this.primeiroNumero.deNumero(Number(this.resultado));
-      this.tela?.mostre(this.resultado);
+      this.valorParaPrimeiroNumero(this.resultado);
     }
   }
 
@@ -94,33 +99,18 @@ export class CpuB5 implements Cpu {
     this.tela?.mostreSeparadorDecimal();
   }
 
-  private memoriaSoma() {
+  private memoriaAlteracao(tipo: "soma" | "subtração") {
     if (!this.ePrimeiroNumero) {
       this.calcularResultado();
       this.memoria += Number(this.resultado);
 
       this.limpar();
       if (this.resultado !== null) {
-        this.limparAoDigitar = true;
-        this.primeiroNumero.deNumero(Number(this.resultado));
-        this.tela?.mostre(this.resultado);
+        this.valorParaPrimeiroNumero(this.resultado);
       }
     } else if (this.ePrimeiroNumero) {
-      this.memoria += this.primeiroNumero.paraNumero();
-    }
-
-    this.limparAoDigitar = true;
-  }
-
-  private memoriaSubtracao() {
-    if (!this.ePrimeiroNumero || this.resultado) {
-      this.calcularResultado();
-      this.memoria -= Number(this.resultado);
-
-      this.tela?.limpe();
-      this.tela?.mostre(Number(this.resultado));
-    } else if (this.ePrimeiroNumero) {
-      this.memoria -= this.primeiroNumero.paraNumero();
+      if (tipo === "soma") this.memoria += this.primeiroNumero.paraNumero();
+      else this.memoria -= this.primeiroNumero.paraNumero();
     }
 
     this.limparAoDigitar = true;
@@ -135,11 +125,9 @@ export class CpuB5 implements Cpu {
 
     // Mostrando memória
     this.tela?.limpe();
-    this.tela?.mostre(this.memoria);
-    this.primeiroNumero.deNumero(this.memoria);
+    this.valorParaPrimeiroNumero(this.memoria);
     this.segundoNumero = new NumeroB5();
     this.limparMemoria = true;
-    this.limparAoDigitar = true;
   }
 
   // ** Métodos de operações
@@ -267,10 +255,10 @@ export class CpuB5 implements Cpu {
         this.separadorDecimal();
         break;
       case Controle.MEMÓRIA_SOMA:
-        this.memoriaSoma();
+        this.memoriaAlteracao("soma");
         break;
       case Controle.MEMÓRIA_SUBTRAÇÃO:
-        this.memoriaSubtracao();
+        this.memoriaAlteracao("subtração");
         break;
       case Controle.MEMÓRIA_LEITURA_LIMPEZA:
         this.memoriaLeituraLimpeza();
