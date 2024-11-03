@@ -31,11 +31,15 @@ export class CpuB5 implements Cpu {
     this.limparMemoria = false;
   }
 
+  // ** Métodos Gerais
   private limpar() {
     this.tela?.limpe();
-    this.primeiroNumero.digitos = [];
-    this.segundoNumero.digitos = [];
+    this.primeiroNumero = new NumeroB5();
+    this.segundoNumero = new NumeroB5();
     this.ePrimeiroNumero = true;
+    this.operando = "";
+    this.limparAoDigitar = false;
+    this.limparMemoria = false;
   }
 
   private calcularResultado() {
@@ -50,9 +54,11 @@ export class CpuB5 implements Cpu {
     const num1 = Number(num1Lista.join(""));
     const num2 = Number(num2Lista.join(""));
 
+    console.log(`${num1}${this.operando}${num2}`);
     this.resultado = eval(`${num1}${this.operando}${num2}`) as number;
   }
 
+  // ** Métodos de Controle
   private ativacaolimpezaErro() {
     if (this.ligado === false) this.tela?.mostre(0);
     if (this.ligado === true) this.reinicie();
@@ -63,15 +69,12 @@ export class CpuB5 implements Cpu {
   private igual() {
     this.calcularResultado();
 
+    this.limpar();
     if (this.resultado !== null) {
-      this.limpar();
+      this.limparAoDigitar = true;
+      this.primeiroNumero.deNumero(Number(this.resultado));
       this.tela?.mostre(this.resultado);
     }
-
-    this.primeiroNumero.deNumero(Number(this.resultado));
-    this.segundoNumero = new NumeroB5();
-
-    this.limparAoDigitar = true;
   }
 
   private desativacao() {
@@ -92,37 +95,111 @@ export class CpuB5 implements Cpu {
   }
 
   private memoriaSoma() {
-    if (!this.ePrimeiroNumero || this.resultado) {
+    if (!this.ePrimeiroNumero) {
       this.calcularResultado();
       this.memoria += Number(this.resultado);
-      this.tela?.limpe();
-      this.tela?.mostre(Number(this.resultado));
+
+      this.limpar();
+      if (this.resultado !== null) {
+        this.limparAoDigitar = true;
+        this.primeiroNumero.deNumero(Number(this.resultado));
+        this.tela?.mostre(this.resultado);
+      }
     } else if (this.ePrimeiroNumero) {
       this.memoria += this.primeiroNumero.paraNumero();
     }
+
+    this.limparAoDigitar = true;
   }
 
   private memoriaSubtracao() {
     if (!this.ePrimeiroNumero || this.resultado) {
       this.calcularResultado();
       this.memoria -= Number(this.resultado);
+
+      this.tela?.limpe();
+      this.tela?.mostre(Number(this.resultado));
     } else if (this.ePrimeiroNumero) {
       this.memoria -= this.primeiroNumero.paraNumero();
     }
-    // this.limpar();
 
     this.limparAoDigitar = true;
   }
 
   private memoriaLeituraLimpeza() {
+    // Limpando memória
     if (this.limparMemoria) {
       this.memoria = 0;
       this.limparMemoria = false;
     }
 
+    // Mostrando memória
     this.tela?.limpe();
     this.tela?.mostre(this.memoria);
+    this.primeiroNumero.deNumero(this.memoria);
+    this.segundoNumero = new NumeroB5();
     this.limparMemoria = true;
+    this.limparAoDigitar = true;
+  }
+
+  // ** Métodos de operações
+  private calcularRaizQuadrada() {
+    this.tela?.limpe();
+    this.tela?.mostre(
+      eval(`${Number(this.primeiroNumero.digitos.join(""))}**0.5`)
+    );
+  }
+
+  private calcularPorcentual() {
+    if (this.ePrimeiroNumero) this.limpar();
+
+    // Convertendo números
+    const primeiroNumero = Number(this.primeiroNumero.digitos.join(""));
+    const segundoNumero = Number(this.segundoNumero.digitos.join(""));
+
+    let resultado;
+    if (["+", "-"].includes(this.operando)) {
+      // Calcula o primeiro número em %
+      resultado = primeiroNumero * (segundoNumero / 100);
+    } else if (["*", "/"].includes(this.operando)) {
+      // Tranforma o segundo número em % decimal
+      resultado = segundoNumero / 100;
+    }
+
+    // Converte o resultado em uma lista de strings (catacteres)
+    let listaResultado = String(resultado).split("");
+
+    // Encontra a posição do separador decimal e retira ele de lista de caracteres
+    this.segundoNumero.posiçãoSeparadorDecimal = listaResultado.indexOf(".");
+    listaResultado = listaResultado.filter((value) => value !== ".");
+
+    // @ts-ignore
+    this.segundoNumero.digitos = listaResultado;
+
+    this.tela?.limpe();
+
+    // Cópia da lista de caracteres do primeiro número
+    let listaNumero: (Digito | ".")[] = this.primeiroNumero.digitos.slice();
+
+    // Posição do separadorDecimal
+    const posicaoSeparadorDecimal = this.primeiroNumero.posiçãoSeparadorDecimal;
+
+    // Adicionando separador decimal na lista
+    if (posicaoSeparadorDecimal) {
+      listaNumero = [
+        ...listaNumero.slice(0, posicaoSeparadorDecimal),
+        ".",
+        ...listaNumero.slice(posicaoSeparadorDecimal, listaNumero.length),
+      ];
+    }
+
+    this.tela?.mostre(
+      eval(
+        `${Number(listaNumero.join(""))}${this.operando}${
+          this.segundoNumero.digitos[0] + "." + this.segundoNumero.digitos[1]
+        }`
+      )
+    );
   }
 
   recebaDigito(digito: Digito) {
@@ -130,17 +207,15 @@ export class CpuB5 implements Cpu {
       if (this.limparAoDigitar) {
         this.tela?.limpe();
         this.limparAoDigitar = false;
+
+        if (this.ePrimeiroNumero) {
+          this.primeiroNumero = new NumeroB5();
+        }
       }
+
       this.limparMemoria = false;
 
-      this.resultado = 0;
-
-      if (!this.ePrimeiroNumero && this.segundoNumero?.digitos.length === 0) {
-        this.tela?.limpe();
-      }
-
       this.tela?.mostre(digito);
-
       if (this.ePrimeiroNumero) {
         this.primeiroNumero.digitos.push(digito);
       } else {
@@ -151,84 +226,28 @@ export class CpuB5 implements Cpu {
 
   recebaOperacao(operação: Operação) {
     if (this.ligado) {
+      this.limparAoDigitar = true;
       this.ePrimeiroNumero = false;
 
       switch (operação) {
         case Operação.SOMA:
           this.operando = "+";
-          return;
+          break;
         case Operação.SUBTRAÇÃO:
           this.operando = "-";
-          return;
+          break;
         case Operação.MULTIPLICAÇÃO:
           this.operando = "*";
-          return;
+          break;
         case Operação.DIVISÃO:
           this.operando = "/";
-          return;
+          break;
         case Operação.RAIZ_QUADRADA:
-          this.tela?.limpe();
-          this.tela?.mostre(
-            eval(`${Number(this.primeiroNumero.digitos.join(""))}**0.5`)
-          );
-          return;
+          this.calcularRaizQuadrada();
+          break;
         case Operação.PERCENTUAL:
-          if (this.ePrimeiroNumero) this.limpar();
-
-          // Convertendo números
-          const primeiroNumero = Number(this.primeiroNumero.digitos.join(""));
-          const segundoNumero = Number(this.segundoNumero.digitos.join(""));
-
-          let resultado;
-          if (["+", "-"].includes(this.operando)) {
-            // Calcula o primeiro número em %
-            resultado = primeiroNumero * (segundoNumero / 100);
-          } else if (["*", "/"].includes(this.operando)) {
-            // Tranforma o segundo número em % decimal
-            resultado = segundoNumero / 100;
-          }
-
-          // Converte o resultado em uma lista de strings (catacteres)
-          let listaResultado = String(resultado).split("");
-
-          // Encontra a posição do separador decimal e retira ele de lista de caracteres
-          this.segundoNumero.posiçãoSeparadorDecimal =
-            listaResultado.indexOf(".");
-          listaResultado = listaResultado.filter((value) => value !== ".");
-
-          // @ts-ignore
-          this.segundoNumero.digitos = listaResultado;
-
-          this.tela?.limpe();
-
-          // Cópia da lista de caracteres do primeiro número
-          let listaNumero: (Digito | ".")[] =
-            this.primeiroNumero.digitos.slice();
-
-          // Posição do separadorDecimal
-          const posicaoSeparadorDecimal =
-            this.primeiroNumero.posiçãoSeparadorDecimal;
-
-          // Adicionando separador decimal na lista
-          if (posicaoSeparadorDecimal) {
-            listaNumero = [
-              ...listaNumero.slice(0, posicaoSeparadorDecimal),
-              ".",
-              ...listaNumero.slice(posicaoSeparadorDecimal, listaNumero.length),
-            ];
-          }
-
-          this.tela?.mostre(
-            eval(
-              `${Number(listaNumero.join(""))}${this.operando}${
-                this.segundoNumero.digitos[0] +
-                "." +
-                this.segundoNumero.digitos[1]
-              }`
-            )
-          );
-
-          return;
+          this.calcularPorcentual();
+          break;
       }
     }
   }
