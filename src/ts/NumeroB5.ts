@@ -12,7 +12,8 @@ export class NumeroB5 {
       newDigitos.splice(this.posiçãoSeparadorDecimal, 0, ".");
     }
 
-    return Number(newDigitos.join(""));
+    if (this.sinal === 1) return Number(newDigitos.join("")) * -1;
+    else return Number(newDigitos.join(""));
   }
 
   deNumero(numero: number): void {
@@ -25,6 +26,8 @@ export class NumeroB5 {
       this.posiçãoSeparadorDecimal = numeroString.indexOf(".");
 
     // @ts-ignore
-    this.digitos = numeroString.split("").filter((valor) => valor !== ".");
+    this.digitos = numeroString
+      .split("")
+      .filter((valor) => ![".", "-"].includes(valor));
   }
 }

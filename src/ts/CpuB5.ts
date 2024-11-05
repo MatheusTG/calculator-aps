@@ -9,8 +9,8 @@ export class CpuB5 implements Cpu {
   ePrimeiroNumero: boolean;
   operando: string;
   ligado: boolean;
-  memoria: number;
-  resultado: number | null;
+  memoria: NumeroB5;
+  resultado: NumeroB5;
 
   // Limpar tela ao digitar próximo número?
   limparAoDigitar: boolean;
@@ -24,8 +24,8 @@ export class CpuB5 implements Cpu {
     this.ePrimeiroNumero = true;
     this.operando = "";
 
-    this.memoria = 0;
-    this.resultado = null;
+    this.memoria = new NumeroB5();
+    this.resultado = new NumeroB5();
 
     this.limparAoDigitar = false;
     this.limparMemoria = false;
@@ -54,12 +54,14 @@ export class CpuB5 implements Cpu {
     const num1 = Number(num1Lista.join(""));
     const num2 = Number(num2Lista.join(""));
 
-    this.resultado = eval(`${num1}${this.operando}${num2}`) as number;
+    
+    this.resultado.deNumero(eval(`${num1}${this.operando}${num2}`));
+    console.log(this.resultado);
   }
 
-  private valorParaPrimeiroNumero(valor: number) {
+  private valorParaPrimeiroNumero(valor: NumeroB5) {
     this.limparAoDigitar = true;
-    this.primeiroNumero.deNumero(valor);
+    this.primeiroNumero = valor;
 
     this.tela?.mostreSinal(this.primeiroNumero.sinal);
     this.primeiroNumero.digitos.forEach((valor) => this.tela?.mostre(valor));
@@ -85,7 +87,7 @@ export class CpuB5 implements Cpu {
   private desativacao() {
     this.tela?.limpe();
     this.ligado = false;
-    this.memoria = 0;
+    this.memoria = new NumeroB5();
   }
 
   private separadorDecimal() {
@@ -102,15 +104,22 @@ export class CpuB5 implements Cpu {
   private memoriaAlteracao(tipo: "soma" | "subtração") {
     if (!this.ePrimeiroNumero) {
       this.calcularResultado();
-      this.memoria += Number(this.resultado);
+
+      this.memoria.deNumero(
+        this.memoria.paraNumero() + this.resultado?.paraNumero()
+      );
 
       this.limpar();
-      if (this.resultado !== null) {
-        this.valorParaPrimeiroNumero(this.resultado);
-      }
+      this.valorParaPrimeiroNumero(this.resultado);
     } else if (this.ePrimeiroNumero) {
-      if (tipo === "soma") this.memoria += this.primeiroNumero.paraNumero();
-      else this.memoria -= this.primeiroNumero.paraNumero();
+      if (tipo === "soma")
+        this.memoria.deNumero(
+          this.memoria.paraNumero() + this.resultado?.paraNumero()
+        );
+      else
+        this.memoria.deNumero(
+          this.memoria.paraNumero() + this.resultado?.paraNumero()
+        );
     }
 
     this.limparAoDigitar = true;
@@ -119,7 +128,7 @@ export class CpuB5 implements Cpu {
   private memoriaLeituraLimpeza() {
     // Limpando memória
     if (this.limparMemoria) {
-      this.memoria = 0;
+      this.memoria = new NumeroB5();
       this.limparMemoria = false;
     }
 
