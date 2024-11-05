@@ -3,6 +3,7 @@ import {
   Cpu,
   Digito,
   Operação,
+  Sinal,
   Teclado,
   Tela,
 } from "../@types/calculadora";
@@ -31,7 +32,7 @@ function isControle(botao: HTMLButtonElement): botao is TeclaTipo<Controle> {
 export class CalculadoraIHC {
   botoes: HTMLButtonElement[];
   Teclado: Teclado;
-  Tela: Tela & { lista: (string | number)[] };
+  Tela: Tela & { lista: (string | number)[]; sinal: boolean };
   cpu: Cpu & { ligado: boolean };
 
   telaElemento: HTMLDivElement | null;
@@ -70,6 +71,14 @@ export class CalculadoraIHC {
       if (isDigito(botao)) this.Teclado.digiteDigito(botao.dataset.value);
       if (isOperacao(botao)) this.Teclado.digiteOperacao(botao.dataset.value);
       if (isControle(botao)) this.Teclado.digiteControle(botao.dataset.value);
+    }
+
+    // Adicionando e remomendo sinal
+    if (this.ligado) {
+      console.log(this.Tela.sinal);
+      if (this.Tela.sinal) this.telaElemento?.classList.add("activeSinal");
+      else this.telaElemento?.classList.remove("activeSinal");
+      console.log(this.telaElemento);
     }
 
     // ligando a calculadora caso ela esteja desligada

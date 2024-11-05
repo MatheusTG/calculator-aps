@@ -54,14 +54,14 @@ export class CpuB5 implements Cpu {
     const num1 = Number(num1Lista.join(""));
     const num2 = Number(num2Lista.join(""));
 
-    console.log(`${num1}${this.operando}${num2}`);
     this.resultado = eval(`${num1}${this.operando}${num2}`) as number;
   }
 
   private valorParaPrimeiroNumero(valor: number) {
     this.limparAoDigitar = true;
     this.primeiroNumero.deNumero(valor);
-    console.log(this.primeiroNumero.digitos);
+
+    this.tela?.mostreSinal(this.primeiroNumero.sinal);
     this.primeiroNumero.digitos.forEach((valor) => this.tela?.mostre(valor));
   }
 

@@ -1,9 +1,10 @@
-import { Digito } from "../@types/calculadora";
+import { Digito, Sinal } from "../@types/calculadora";
 
 export class NumeroB5 {
   digitos: Digito[] = [];
 
   posiçãoSeparadorDecimal: number | null = 0;
+  sinal: Sinal = 0;
 
   paraNumero(): number {
     let newDigitos: (Digito | ".")[] = [...this.digitos];
@@ -11,10 +12,13 @@ export class NumeroB5 {
       newDigitos.splice(this.posiçãoSeparadorDecimal, 0, ".");
     }
 
-    return Number(newDigitos.join(''));
+    return Number(newDigitos.join(""));
   }
 
-  deNumero(numero: Number): void {
+  deNumero(numero: number): void {
+    if (numero < 0) this.sinal = 1;
+    else this.sinal = 0;
+
     const numeroString = numero.toString();
 
     if (numeroString.indexOf(".") !== -1)
