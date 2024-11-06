@@ -75,10 +75,8 @@ export class CalculadoraIHC {
 
     // Adicionando e remomendo sinal
     if (this.ligado) {
-      console.log(this.Tela.sinal);
       if (this.Tela.sinal) this.telaElemento?.classList.add("activeSinal");
       else this.telaElemento?.classList.remove("activeSinal");
-      console.log(this.telaElemento);
     }
 
     // ligando a calculadora caso ela esteja desligada

@@ -43,20 +43,10 @@ export class CpuB5 implements Cpu {
   }
 
   private calcularResultado() {
-    const num1Lista: (Digito | ".")[] = [...this.primeiroNumero.digitos];
-    const posicaoDecimal1 = this.primeiroNumero.posiçãoSeparadorDecimal;
-    if (posicaoDecimal1) num1Lista.splice(posicaoDecimal1, 0, ".");
+    const num1 = this.primeiroNumero.paraNumero();
+    const num2 = this.segundoNumero.paraNumero();
 
-    const num2Lista: (Digito | ".")[] = [...this.segundoNumero.digitos];
-    const posicaoDecimal2 = this.segundoNumero.posiçãoSeparadorDecimal;
-    if (posicaoDecimal2) num2Lista.splice(posicaoDecimal2, 0, ".");
-
-    const num1 = Number(num1Lista.join(""));
-    const num2 = Number(num2Lista.join(""));
-
-    
     this.resultado.deNumero(eval(`${num1}${this.operando}${num2}`));
-    console.log(this.resultado);
   }
 
   private valorParaPrimeiroNumero(valor: NumeroB5) {
@@ -111,17 +101,17 @@ export class CpuB5 implements Cpu {
 
       this.limpar();
       this.valorParaPrimeiroNumero(this.resultado);
-    } else if (this.ePrimeiroNumero) {
-      if (tipo === "soma")
-        this.memoria.deNumero(
-          this.memoria.paraNumero() + this.resultado?.paraNumero()
-        );
-      else
-        this.memoria.deNumero(
-          this.memoria.paraNumero() + this.resultado?.paraNumero()
-        );
+    } else {
+      console.log(this.memoria, this.primeiroNumero);
+      this.memoria.deNumero(
+        eval(
+          `${this.memoria.paraNumero()} 
+           ${tipo === "soma" ? "+" : "-"}
+           ${this.primeiroNumero?.paraNumero()}`
+        )
+      );
+      this.primeiroNumero = new NumeroB5();
     }
-
     this.limparAoDigitar = true;
   }
 
@@ -140,6 +130,17 @@ export class CpuB5 implements Cpu {
   }
 
   // ** Métodos de operações
+  private mostrarSinal(): boolean {
+    if (this.ePrimeiroNumero && !this.primeiroNumero.digitos.length) {
+      this.primeiroNumero.sinal = 1;
+      return true;
+    } else if (!this.ePrimeiroNumero && this.operando) {
+      this.segundoNumero.sinal = 1;
+      return true;
+    }
+    return false;
+  }
+
   private calcularRaizQuadrada() {
     this.tela?.limpe();
     this.tela?.mostre(
@@ -203,11 +204,8 @@ export class CpuB5 implements Cpu {
     if (this.ligado) {
       if (this.limparAoDigitar) {
         this.tela?.limpe();
+        this.tela?.mostreSinal(0);
         this.limparAoDigitar = false;
-
-        if (this.ePrimeiroNumero) {
-          this.primeiroNumero = new NumeroB5();
-        }
       }
 
       this.limparMemoria = false;
@@ -224,14 +222,18 @@ export class CpuB5 implements Cpu {
   recebaOperacao(operação: Operação) {
     if (this.ligado) {
       this.limparAoDigitar = true;
-      this.ePrimeiroNumero = false;
+
+      if (operação !== Operação.SUBTRAÇÃO) this.ePrimeiroNumero = false;
 
       switch (operação) {
         case Operação.SOMA:
           this.operando = "+";
           break;
         case Operação.SUBTRAÇÃO:
-          this.operando = "-";
+          if (!this.mostrarSinal()) {
+            this.ePrimeiroNumero = false;
+            this.operando = "-";
+          }
           break;
         case Operação.MULTIPLICAÇÃO:
           this.operando = "*";
