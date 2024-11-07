@@ -102,7 +102,6 @@ export class CpuB5 implements Cpu {
       this.limpar();
       this.valorParaPrimeiroNumero(this.resultado);
     } else {
-      console.log(this.memoria, this.primeiroNumero);
       this.memoria.deNumero(
         eval(
           `${this.memoria.paraNumero()} 
@@ -225,6 +224,14 @@ export class CpuB5 implements Cpu {
 
       if (operação !== Operação.SUBTRAÇÃO) this.ePrimeiroNumero = false;
 
+      const { SOMA, SUBTRAÇÃO, MULTIPLICAÇÃO, DIVISÃO } = Operação;
+      if (
+        this.segundoNumero.digitos.length &&
+        [SOMA, SUBTRAÇÃO, MULTIPLICAÇÃO, DIVISÃO].includes(operação)
+      ) {
+        this.igual();
+        this.ePrimeiroNumero = false;
+      }
       switch (operação) {
         case Operação.SOMA:
           this.operando = "+";
