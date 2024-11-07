@@ -60,7 +60,10 @@ export class CpuB5 implements Cpu {
   // ** Métodos de Controle
   private ativacaolimpezaErro() {
     if (this.ligado === false) this.tela?.mostre(0);
-    if (this.ligado === true) this.reinicie();
+    if (this.ligado === true) {
+      this.reinicie();
+      this.tela?.mostre(0);
+    }
 
     this.ligado = true;
   }
@@ -151,52 +154,20 @@ export class CpuB5 implements Cpu {
     if (this.ePrimeiroNumero) this.limpar();
 
     // Convertendo números
-    const primeiroNumero = Number(this.primeiroNumero.digitos.join(""));
-    const segundoNumero = Number(this.segundoNumero.digitos.join(""));
+    const primeiroNumero = this.primeiroNumero.paraNumero();
+    const segundoNumero = this.segundoNumero.paraNumero();
 
-    let resultado;
+    let valor;
     if (["+", "-"].includes(this.operando)) {
-      // Calcula o primeiro número em %
-      resultado = primeiroNumero * (segundoNumero / 100);
+      valor = primeiroNumero * (segundoNumero / 100);
     } else if (["*", "/"].includes(this.operando)) {
-      // Tranforma o segundo número em % decimal
-      resultado = segundoNumero / 100;
+      valor = segundoNumero / 100;
     }
-
-    // Converte o resultado em uma lista de strings (catacteres)
-    let listaResultado = String(resultado).split("");
-
-    // Encontra a posição do separador decimal e retira ele de lista de caracteres
-    this.segundoNumero.posiçãoSeparadorDecimal = listaResultado.indexOf(".");
-    listaResultado = listaResultado.filter((value) => value !== ".");
-
-    // @ts-ignore
-    this.segundoNumero.digitos = listaResultado;
 
     this.tela?.limpe();
-
-    // Cópia da lista de caracteres do primeiro número
-    let listaNumero: (Digito | ".")[] = this.primeiroNumero.digitos.slice();
-
-    // Posição do separadorDecimal
-    const posicaoSeparadorDecimal = this.primeiroNumero.posiçãoSeparadorDecimal;
-
-    // Adicionando separador decimal na lista
-    if (posicaoSeparadorDecimal) {
-      listaNumero = [
-        ...listaNumero.slice(0, posicaoSeparadorDecimal),
-        ".",
-        ...listaNumero.slice(posicaoSeparadorDecimal, listaNumero.length),
-      ];
-    }
-
-    this.tela?.mostre(
-      eval(
-        `${Number(listaNumero.join(""))}${this.operando}${
-          this.segundoNumero.digitos[0] + "." + this.segundoNumero.digitos[1]
-        }`
-      )
-    );
+    const resultado = eval(`${primeiroNumero}${this.operando}${valor}`);
+    this.resultado.deNumero(resultado);
+    this.valorParaPrimeiroNumero(this.resultado);
   }
 
   recebaDigito(digito: Digito) {
@@ -224,14 +195,10 @@ export class CpuB5 implements Cpu {
 
       if (operação !== Operação.SUBTRAÇÃO) this.ePrimeiroNumero = false;
 
-      const { SOMA, SUBTRAÇÃO, MULTIPLICAÇÃO, DIVISÃO } = Operação;
-      if (
-        this.segundoNumero.digitos.length &&
-        [SOMA, SUBTRAÇÃO, MULTIPLICAÇÃO, DIVISÃO].includes(operação)
-      ) {
-        this.igual();
-        this.ePrimeiroNumero = false;
-      }
+      // if (this.segundoNumero.digitos.length) {
+      //   this.igual();
+      //   this.ePrimeiroNumero = false;
+      // }
       switch (operação) {
         case Operação.SOMA:
           this.operando = "+";
