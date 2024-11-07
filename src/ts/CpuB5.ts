@@ -195,10 +195,13 @@ export class CpuB5 implements Cpu {
 
       if (operação !== Operação.SUBTRAÇÃO) this.ePrimeiroNumero = false;
 
-      // if (this.segundoNumero.digitos.length) {
-      //   this.igual();
-      //   this.ePrimeiroNumero = false;
-      // }
+      if (
+        this.segundoNumero.digitos.length &&
+        ![Operação.RAIZ_QUADRADA, Operação.PERCENTUAL].includes(operação)
+      ) {
+        this.igual();
+        this.ePrimeiroNumero = false;
+      }
       switch (operação) {
         case Operação.SOMA:
           this.operando = "+";
