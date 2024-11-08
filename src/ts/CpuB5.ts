@@ -4,17 +4,17 @@ import { NumeroB5 } from "./NumeroB5";
 export class CpuB5 implements Cpu {
   tela: Tela | undefined;
 
-  primeiroNumero: NumeroB5;
-  segundoNumero: NumeroB5;
-  ePrimeiroNumero: boolean;
-  operando: string;
-  ligado: boolean;
-  memoria: NumeroB5;
-  resultado: NumeroB5;
+  private primeiroNumero: NumeroB5;
+  private segundoNumero: NumeroB5;
+  private ePrimeiroNumero: boolean;
+  private operando: string;
+  private ligado: boolean;
+  private memoria: NumeroB5;
+  private resultado: NumeroB5;
 
   // Limpar tela ao digitar próximo número?
-  limparAoDigitar: boolean;
-  limparMemoria: boolean;
+  private limparAoDigitar: boolean;
+  private limparMemoria: boolean;
   constructor() {
     this.tela = undefined;
     this.ligado = false;

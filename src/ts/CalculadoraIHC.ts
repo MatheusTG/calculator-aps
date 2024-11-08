@@ -3,7 +3,6 @@ import {
   Cpu,
   Digito,
   Operação,
-  Sinal,
   Teclado,
   Tela,
 } from "../@types/calculadora";
@@ -33,7 +32,7 @@ export class CalculadoraIHC {
   botoes: HTMLButtonElement[];
   Teclado: Teclado;
   Tela: Tela & { lista: (string | number)[]; sinal: boolean };
-  cpu: Cpu & { ligado: boolean };
+  cpu: Cpu;
 
   telaElemento: HTMLDivElement | null;
   ligado: boolean;
@@ -99,7 +98,7 @@ export class CalculadoraIHC {
         }
         this.telaElemento.innerText = this.Tela.lista.join("");
       }
-    if (!this.cpu.ligado) {
+    if (botao instanceof HTMLButtonElement && botao.dataset.value === "0") {
       this.ligado = false;
       this.telaElemento?.classList.remove("display-on");
     }
