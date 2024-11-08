@@ -3,10 +3,12 @@ import { Digito, Sinal, Tela } from "../@types/calculadora";
 export class TelaB5 implements Tela {
   lista: (string | number)[];
   sinal: boolean;
+  memoria: boolean;
 
   constructor() {
     this.lista = ["0"];
     this.sinal = false;
+    this.memoria = false;
   }
   mostreSeparadorDecimal(): void {
     this.lista.push(".");
@@ -17,7 +19,7 @@ export class TelaB5 implements Tela {
   }
 
   mostreMemoria(): void {
-    throw new Error("Method not implemented.");
+    this.memoria = !this.memoria;
   }
   mostreErro(): void {
     throw new Error("Method not implemented.");
@@ -29,5 +31,6 @@ export class TelaB5 implements Tela {
 
   limpe(): void {
     this.lista = [];
+    this.sinal = false;
   }
 }

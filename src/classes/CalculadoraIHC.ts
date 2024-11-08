@@ -31,7 +31,7 @@ function isControle(botao: HTMLButtonElement): botao is TeclaTipo<Controle> {
 export class CalculadoraIHC {
   botoes: HTMLButtonElement[];
   Teclado: Teclado;
-  Tela: Tela & { lista: (string | number)[]; sinal: boolean };
+  Tela: Tela & { lista: (string | number)[]; sinal: boolean; memoria: boolean };
   cpu: Cpu;
 
   telaElemento: HTMLDivElement | null;
@@ -78,6 +78,12 @@ export class CalculadoraIHC {
       else this.telaElemento?.classList.remove("activeSinal");
     }
 
+    if (this.Tela.memoria) {
+      this.telaElemento?.classList.add("activeMemoria");
+    } else {
+      this.telaElemento?.classList.remove("activeMemoria");
+    }
+
     // ligando a calculadora caso ela esteja desligada
     if (!this.ligado && this.Tela.lista.length) {
       this.Tela.lista.pop();
@@ -98,7 +104,11 @@ export class CalculadoraIHC {
         }
         this.telaElemento.innerText = this.Tela.lista.join("");
       }
-    if (botao instanceof HTMLButtonElement && botao.dataset.value === "0") {
+    if (
+      botao instanceof HTMLButtonElement &&
+      botao.dataset.value === "0" &&
+      botao.dataset.button === "CONTROLADOR"
+    ) {
       this.ligado = false;
       this.telaElemento?.classList.remove("display-on");
     }

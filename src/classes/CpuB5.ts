@@ -40,6 +40,7 @@ export class CpuB5 implements Cpu {
     this.operando = "";
     this.limparAoDigitar = false;
     this.limparMemoria = false;
+    if (this.memoria.digitos.length) this.tela?.mostreMemoria();
   }
 
   private calcularResultado() {
@@ -71,15 +72,17 @@ export class CpuB5 implements Cpu {
   private igual() {
     this.calcularResultado();
 
-    this.limpar();
+    this.tela?.limpe();
+    this.ePrimeiroNumero = true;
+    this.limparAoDigitar = false;
     if (this.resultado !== null) {
       this.valorParaPrimeiroNumero(this.resultado);
     }
   }
 
   private desativacao() {
-    this.tela?.limpe();
     this.ligado = false;
+    this.limpar();
     this.memoria = new NumeroB5();
   }
 
@@ -104,14 +107,19 @@ export class CpuB5 implements Cpu {
 
       this.limpar();
       this.valorParaPrimeiroNumero(this.resultado);
+
+      if (!!this.resultado && !this.memoria.digitos.length)
+        this.tela?.mostreMemoria();
     } else {
-      this.memoria.deNumero(
-        eval(
-          `${this.memoria.paraNumero()} 
-           ${tipo === "soma" ? "+" : "-"}
-           ${this.primeiroNumero?.paraNumero()}`
-        )
+      const resultado = eval(
+        `${this.memoria.paraNumero()} 
+         ${tipo === "soma" ? "+" : "-"}
+         ${this.primeiroNumero?.paraNumero()}`
       );
+
+      if (resultado !== 0 && !this.memoria.digitos.length)
+        this.tela?.mostreMemoria();
+      this.memoria.deNumero(resultado);
       this.primeiroNumero = new NumeroB5();
     }
     this.limparAoDigitar = true;
@@ -122,6 +130,7 @@ export class CpuB5 implements Cpu {
     if (this.limparMemoria) {
       this.memoria = new NumeroB5();
       this.limparMemoria = false;
+      if (!!this.resultado) this.tela?.mostreMemoria();
     }
 
     // Mostrando memória
@@ -167,6 +176,7 @@ export class CpuB5 implements Cpu {
     this.tela?.limpe();
     const resultado = eval(`${primeiroNumero}${this.operando}${valor}`);
     this.resultado.deNumero(resultado);
+    this.segundoNumero = this.primeiroNumero;
     this.valorParaPrimeiroNumero(this.resultado);
   }
 
