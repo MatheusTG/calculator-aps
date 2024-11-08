@@ -15,6 +15,7 @@ export class CpuB5 implements Cpu {
   // Limpar tela ao digitar próximo número?
   private limparAoDigitar: boolean;
   private limparMemoria: boolean;
+  private resetarNumeros: boolean;
   constructor() {
     this.tela = undefined;
     this.ligado = false;
@@ -29,6 +30,7 @@ export class CpuB5 implements Cpu {
 
     this.limparAoDigitar = false;
     this.limparMemoria = false;
+    this.resetarNumeros = false;
   }
 
   // ** Métodos Gerais
@@ -46,7 +48,12 @@ export class CpuB5 implements Cpu {
   private calcularResultado() {
     const num1 = this.primeiroNumero.paraNumero();
     const num2 = this.segundoNumero.paraNumero();
+    console.log(num1, this.operando, num2);
 
+    if (!this.operando) {
+      this.resultado = this.primeiroNumero;
+      return;
+    }
     this.resultado.deNumero(eval(`${num1}${this.operando}${num2}`));
   }
 
@@ -120,7 +127,7 @@ export class CpuB5 implements Cpu {
       if (resultado !== 0 && !this.memoria.digitos.length)
         this.tela?.mostreMemoria();
       this.memoria.deNumero(resultado);
-      this.primeiroNumero = new NumeroB5();
+      this.resetarNumeros = true;
     }
     this.limparAoDigitar = true;
   }
@@ -178,10 +185,18 @@ export class CpuB5 implements Cpu {
     this.resultado.deNumero(resultado);
     this.segundoNumero = this.primeiroNumero;
     this.valorParaPrimeiroNumero(this.resultado);
+    this.resetarNumeros = true;
+    this.ePrimeiroNumero = true;
+    this.operando = "";
   }
 
   recebaDigito(digito: Digito) {
     if (this.ligado) {
+
+      if (this.resetarNumeros) {
+        this.primeiroNumero = new NumeroB5();
+        this.segundoNumero = new NumeroB5();
+      }
       if (this.limparAoDigitar) {
         this.tela?.limpe();
         this.tela?.mostreSinal(0);
@@ -201,6 +216,7 @@ export class CpuB5 implements Cpu {
 
   recebaOperacao(operação: Operação) {
     if (this.ligado) {
+      this.resetarNumeros = false;
       this.limparAoDigitar = true;
 
       if (operação !== Operação.SUBTRAÇÃO) this.ePrimeiroNumero = false;
