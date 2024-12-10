@@ -6,6 +6,7 @@ import {
   Teclado,
   Tela,
 } from "../@types/calculadora";
+import { TestadorCpu } from "./calculadoraTestes";
 import { CpuB5 } from "./CpuB5";
 import { TecladoB5 } from "./TecladoB5";
 import { TelaB5 } from "./TelaB5";
@@ -49,6 +50,9 @@ export class CalculadoraIHC {
     this.cpu.definaTela(this.Tela);
     this.Teclado = new TecladoB5();
     this.Teclado.definaCpu(this.cpu);
+
+    const testadorCpu = new TestadorCpu(this.cpu, false, true);
+    testadorCpu.executeTodosTestes();
 
     this.bindEvents();
     this.addKeyEvents();
