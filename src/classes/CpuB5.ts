@@ -62,7 +62,12 @@ export class CpuB5 implements Cpu {
     this.primeiroNumero = valor;
 
     this.tela?.mostreSinal(this.primeiroNumero.sinal);
-    this.primeiroNumero.digitos.forEach((valor) => this.tela?.mostre(valor));
+    this.primeiroNumero.digitos.forEach((valor, index) => {
+      this.tela?.mostre(valor);
+      if (this.primeiroNumero.posiçãoSeparadorDecimal === index + 1) {
+        this.tela?.mostreSeparadorDecimal();
+      }
+    });
   }
 
   // ** Métodos de Controle
@@ -78,6 +83,7 @@ export class CpuB5 implements Cpu {
 
   private igual() {
     this.calcularResultado();
+    console.log(8888888, this.resultado.paraNumero());
 
     this.tela?.limpe();
     this.ePrimeiroNumero = true;
@@ -192,7 +198,6 @@ export class CpuB5 implements Cpu {
 
   recebaDigito(digito: Digito) {
     if (this.ligado) {
-
       if (this.resetarNumeros) {
         this.primeiroNumero = new NumeroB5();
         this.segundoNumero = new NumeroB5();
