@@ -54,7 +54,7 @@ export class CalculadoraIHC {
     // @ts-ignore
     const testador = new TestadorCpu(this.cpu, this.Tela);
 
-    testador.testeMemoria01();
+    testador.executeTodosTestes();
 
     this.bindEvents();
     this.addKeyEvents();

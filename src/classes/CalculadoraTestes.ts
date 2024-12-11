@@ -57,6 +57,8 @@ export class TestadorCpu {
   executeTodosTestes(): void {
     if (this.reinicieEntreTestes) this.cpu.reinicie();
     this.testeMemoria01();
+    if (this.reinicieEntreTestes) this.cpu.reinicie();
+    this.testeMemoria02();
   }
 
   private assert(
@@ -98,6 +100,29 @@ export class TestadorCpu {
     });
     this.cpu.recebaControle(Controle.MEMÓRIA_SOMA);
     console.log("= Testando 40 M+ SOMA 20 M+ ===========================");
+
+    this.assert("60", Sinal.POSITIVO, true, false);
+  }
+
+  /** Matheus */
+  testeMemoria02() {
+    console.log(
+      "= Testando 40 M+ SOMA 20 M+ IGUAL ==========================="
+    );
+    [Digito.QUATRO, Digito.ZERO].forEach((element) => {
+      this.cpu.recebaDigito(element);
+    });
+    this.cpu.recebaControle(Controle.MEMÓRIA_SOMA);
+    this.cpu.recebaOperacao(Operação.SOMA);
+
+    [Digito.DOIS, Digito.ZERO].forEach((element) => {
+      this.cpu.recebaDigito(element);
+    });
+    this.cpu.recebaControle(Controle.MEMÓRIA_SOMA);
+    this.cpu.recebaControle(Controle.IGUAL);
+    console.log(
+      "= Testando 40 M+ SOMA 20 M+ IGUAL ==========================="
+    );
 
     this.assert("60", Sinal.POSITIVO, true, false);
   }
