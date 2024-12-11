@@ -1,11 +1,4 @@
-import {
-  Controle,
-  Cpu,
-  Digito,
-  Operação,
-  Sinal,
-  Tela,
-} from "../@types/calculadora";
+import { Controle, Cpu, Digito, Operação, Tela } from "../@types/calculadora";
 import { NumeroB5 } from "./NumeroB5";
 
 export class CpuB5 implements Cpu {

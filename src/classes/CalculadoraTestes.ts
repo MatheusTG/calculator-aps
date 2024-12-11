@@ -66,11 +66,15 @@ export class TestadorCpu {
     if (this.reinicieEntreTestes) this.cpu.reinicie();
     this.testeRaizQuadrada121();
     if (this.reinicieEntreTestes) this.cpu.reinicie();
-    this.testeRaizPorcentagem();
+    this.testePorcentual();
+    if (this.reinicieEntreTestes) this.cpu.reinicie();
+    this.testeMultiplicaçãoComSeparadorDecimal();
     if (this.reinicieEntreTestes) this.cpu.reinicie();
     this.testeMemoria01();
     if (this.reinicieEntreTestes) this.cpu.reinicie();
     this.testeMemoria02();
+    if (this.reinicieEntreTestes) this.cpu.reinicie();
+    this.testeMemoriaSubtração();
   }
 
   private assert(
@@ -163,18 +167,20 @@ export class TestadorCpu {
   }
 
   testeRaizQuadrada121() {
-    console.log("= Testando RAIZ_QUADRADA 9 ===========================");
+    console.log("= Testando RAIZ_QUADRADA 121 ===========================");
     [Digito.UM, Digito.DOIS, Digito.UM].forEach((element) => {
       this.cpu.recebaDigito(element);
     });
     this.cpu.recebaOperacao(Operação.RAIZ_QUADRADA);
-    console.log("= Testando RAIZ_QUADRADA 9  ===========================");
+    console.log("= Testando RAIZ_QUADRADA 121  ===========================");
 
     this.assert("11", Sinal.POSITIVO, false, false);
   }
 
-  testeRaizPorcentagem() {
-    console.log("= Testando PORCENTUAL ===========================");
+  testePorcentual() {
+    console.log(
+      "= Testando CEM DIVISÃO VINTE PORCENTUAL ==========================="
+    );
     [Digito.UM, Digito.ZERO, Digito.ZERO].forEach((element) => {
       this.cpu.recebaDigito(element);
     });
@@ -184,9 +190,36 @@ export class TestadorCpu {
       this.cpu.recebaDigito(element);
     });
     this.cpu.recebaOperacao(Operação.PERCENTUAL);
-    console.log("= Testando PORCENTUAL ===========================");
+    console.log(
+      "= Testando CEM DIVISÃO VINTE PORCENTUAL ==========================="
+    );
 
     this.assert("500", Sinal.POSITIVO, false, false);
+  }
+
+  testeMultiplicaçãoComSeparadorDecimal() {
+    console.log(
+      "= Testando MULTIPLICAÇÃO COM SEPARADOR DECIMAL ==========================="
+    );
+    [Digito.DOIS].forEach((element) => {
+      this.cpu.recebaDigito(element);
+    });
+    this.cpu.recebaControle(Controle.SEPARADOR_DECIMAL);
+    [Digito.CINCO].forEach((element) => {
+      this.cpu.recebaDigito(element);
+    });
+    this.cpu.recebaOperacao(Operação.MULTIPLICAÇÃO);
+
+    [Digito.TRÊS].forEach((element) => {
+      this.cpu.recebaDigito(element);
+    });
+
+    this.cpu.recebaControle(Controle.IGUAL);
+    console.log(
+      "= Testando MULTIPLICAÇÃO COM SEPARADOR DECIMAL ==========================="
+    );
+
+    this.assert("7.5", Sinal.POSITIVO, false, false);
   }
 
   /** Matheus */
@@ -228,5 +261,22 @@ export class TestadorCpu {
     );
 
     this.assert("60", Sinal.POSITIVO, true, false);
+  }
+
+  testeMemoriaSubtração() {
+    console.log("= Testando MEMÓRIA SUBTRAÇÃO ===========================");
+    [Digito.QUATRO].forEach((element) => {
+      this.cpu.recebaDigito(element);
+    });
+    this.cpu.recebaOperacao(Operação.SUBTRAÇÃO);
+
+    [Digito.UM, Digito.OITO].forEach((element) => {
+      this.cpu.recebaDigito(element);
+    });
+    this.cpu.recebaControle(Controle.MEMÓRIA_SUBTRAÇÃO);
+
+    console.log("= Testando MEMÓRIA SUBTRAÇÃO ===========================");
+
+    this.assert("14", Sinal.NEGATIVO, true, false);
   }
 }
