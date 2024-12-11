@@ -1,4 +1,11 @@
-import { Controle, Cpu, Digito, Operação, Tela } from "../@types/calculadora";
+import {
+  Controle,
+  Cpu,
+  Digito,
+  Operação,
+  Sinal,
+  Tela,
+} from "../@types/calculadora";
 import { NumeroB5 } from "./NumeroB5";
 
 export class CpuB5 implements Cpu {
@@ -43,7 +50,6 @@ export class CpuB5 implements Cpu {
     this.limparAoDigitar = false;
     this.limparMemoria = false;
     // if (this.memoria.digitos.length && this.memoria.digitos[0] !== 0) {
-    //   console.log("teste");
     //   this.tela?.mostreMemoria();
     // }
   }
@@ -56,6 +62,7 @@ export class CpuB5 implements Cpu {
       this.resultado = this.primeiroNumero;
       return;
     }
+
     this.resultado.deNumero(eval(`${num1}${this.operando}${num2}`));
   }
 
@@ -194,7 +201,7 @@ export class CpuB5 implements Cpu {
     this.resultado.deNumero(resultado);
     this.segundoNumero = this.primeiroNumero;
     this.valorParaPrimeiroNumero(this.resultado);
-    this.resetarNumeros = true;
+    // this.resetarNumeros = true;
     this.ePrimeiroNumero = true;
     this.operando = "";
   }

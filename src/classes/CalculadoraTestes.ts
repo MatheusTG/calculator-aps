@@ -56,6 +56,18 @@ export class TestadorCpu {
 
   executeTodosTestes(): void {
     if (this.reinicieEntreTestes) this.cpu.reinicie();
+    this.testeSoma();
+    if (this.reinicieEntreTestes) this.cpu.reinicie();
+    this.testeSubtraçãoSinal();
+    if (this.reinicieEntreTestes) this.cpu.reinicie();
+    this.testeMultiplicação();
+    if (this.reinicieEntreTestes) this.cpu.reinicie();
+    this.testeDivisão();
+    if (this.reinicieEntreTestes) this.cpu.reinicie();
+    this.testeRaizQuadrada121();
+    if (this.reinicieEntreTestes) this.cpu.reinicie();
+    this.testeRaizPorcentagem();
+    if (this.reinicieEntreTestes) this.cpu.reinicie();
     this.testeMemoria01();
     if (this.reinicieEntreTestes) this.cpu.reinicie();
     this.testeMemoria02();
@@ -84,6 +96,97 @@ export class TestadorCpu {
 
     if (this.tela.erro != erro)
       console.log("ERROR: erro=" + erro + " resultado=" + this.tela.erro);
+  }
+
+  testeSoma() {
+    console.log("= Testando 55 SOMA 20 ===========================");
+    [Digito.CINCO, Digito.CINCO].forEach((element) => {
+      this.cpu.recebaDigito(element);
+    });
+    this.cpu.recebaOperacao(Operação.SOMA);
+
+    [Digito.DOIS, Digito.ZERO].forEach((element) => {
+      this.cpu.recebaDigito(element);
+    });
+    this.cpu.recebaControle(Controle.IGUAL);
+    console.log("= Testando 55 SOMA 20 ===========================");
+
+    this.assert("75", Sinal.POSITIVO, false, false);
+  }
+
+  testeSubtraçãoSinal() {
+    console.log("= Testando 30 SUBTRAÇÃO 52 ===========================");
+    [Digito.TRÊS, Digito.ZERO].forEach((element) => {
+      this.cpu.recebaDigito(element);
+    });
+    this.cpu.recebaOperacao(Operação.SUBTRAÇÃO);
+
+    [Digito.CINCO, Digito.DOIS].forEach((element) => {
+      this.cpu.recebaDigito(element);
+    });
+    this.cpu.recebaControle(Controle.IGUAL);
+    console.log("= Testando 30 SUBTRAÇÃO 52 ===========================");
+
+    this.assert("22", Sinal.NEGATIVO, false, false);
+  }
+
+  testeMultiplicação() {
+    console.log("= Testando 12 MULTIPLICAÇÃO 11 ===========================");
+    [Digito.UM, Digito.DOIS].forEach((element) => {
+      this.cpu.recebaDigito(element);
+    });
+    this.cpu.recebaOperacao(Operação.MULTIPLICAÇÃO);
+
+    [Digito.UM, Digito.UM].forEach((element) => {
+      this.cpu.recebaDigito(element);
+    });
+    this.cpu.recebaControle(Controle.IGUAL);
+    console.log("= Testando 12 MULTIPLICAÇÃO 11 ===========================");
+
+    this.assert("132", Sinal.POSITIVO, false, false);
+  }
+
+  testeDivisão() {
+    console.log("= Testando 10 DIVISÃO 50 ===========================");
+    [Digito.UM, Digito.ZERO].forEach((element) => {
+      this.cpu.recebaDigito(element);
+    });
+    this.cpu.recebaOperacao(Operação.DIVISÃO);
+
+    [Digito.CINCO, Digito.ZERO].forEach((element) => {
+      this.cpu.recebaDigito(element);
+    });
+    this.cpu.recebaControle(Controle.IGUAL);
+    console.log("= Testando 10 DIVISÃO 50 ===========================");
+
+    this.assert("0.2", Sinal.POSITIVO, false, false);
+  }
+
+  testeRaizQuadrada121() {
+    console.log("= Testando RAIZ_QUADRADA 9 ===========================");
+    [Digito.UM, Digito.DOIS, Digito.UM].forEach((element) => {
+      this.cpu.recebaDigito(element);
+    });
+    this.cpu.recebaOperacao(Operação.RAIZ_QUADRADA);
+    console.log("= Testando RAIZ_QUADRADA 9  ===========================");
+
+    this.assert("11", Sinal.POSITIVO, false, false);
+  }
+
+  testeRaizPorcentagem() {
+    console.log("= Testando PORCENTUAL ===========================");
+    [Digito.UM, Digito.ZERO, Digito.ZERO].forEach((element) => {
+      this.cpu.recebaDigito(element);
+    });
+    this.cpu.recebaOperacao(Operação.DIVISÃO);
+
+    [Digito.DOIS, Digito.ZERO].forEach((element) => {
+      this.cpu.recebaDigito(element);
+    });
+    this.cpu.recebaOperacao(Operação.PERCENTUAL);
+    console.log("= Testando PORCENTUAL ===========================");
+
+    this.assert("500", Sinal.POSITIVO, false, false);
   }
 
   /** Matheus */

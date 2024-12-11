@@ -17,6 +17,8 @@ export class NumeroB5 {
   }
 
   deNumero(numero: number): void {
+    this.posiçãoSeparadorDecimal = null;
+
     if (numero < 0) this.sinal = 1;
     else this.sinal = 0;
 
