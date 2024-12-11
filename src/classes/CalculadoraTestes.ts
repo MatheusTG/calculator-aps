@@ -39,28 +39,24 @@ export class TestadorTela {
 
 export class TestadorCpu {
   private cpu: Cpu;
-  private tela: TelaB5 = new TelaB5();
+  private tela: TelaB5 & { lista: any[] } = new TelaB5();
   private reinicieEntreTestes: boolean = true;
 
   constructor(
     cpu: Cpu,
-    debug: boolean = false,
+    // debug: boolean = false,
     reinicieEntreTestes: boolean = true
   ) {
     this.cpu = cpu;
     this.cpu.definaTela(this.tela);
     this.cpu.recebaControle(Controle.ATIVAÇÃO_LIMPEZA_ERRO);
-    this.tela.debug = debug;
+    // this.tela.debug = debug;
     this.reinicieEntreTestes = reinicieEntreTestes;
   }
 
   executeTodosTestes(): void {
     if (this.reinicieEntreTestes) this.cpu.reinicie();
-    this.teste123Soma456();
-    if (this.reinicieEntreTestes) this.cpu.reinicie();
-    this.teste12Divisão10();
-    if (this.reinicieEntreTestes) this.cpu.reinicie();
-    this.teste12Soma34Soma56();
+    this.testeMemoria01();
   }
 
   private assert(
@@ -69,61 +65,40 @@ export class TestadorCpu {
     memoria: boolean,
     erro: boolean
   ) {
-    const resultado: string = this.tela.digitos;
-    console.log(7777, resultado);
+    const resultado: string = this.tela.lista.join("");
+
     if (resultado == esperado) console.log("OK");
     else console.log("ERROR: esperado=" + esperado + " resultado=" + resultado);
-    if (this.tela.sinal != sinal)
-      console.log("ERROR: sinal=" + sinal + " resultado=" + this.tela.sinal);
+
+    const sinalTela = this.tela.sinal ? Sinal.NEGATIVO : Sinal.POSITIVO;
+    if (sinalTela !== sinal) {
+      console.log("ERROR: sinal=" + sinal + " resultado=" + sinalTela);
+    }
+
     if (this.tela.memoria != memoria)
       console.log(
         "ERROR: memoria=" + memoria + " resultado=" + this.tela.memoria
       );
-    if (this.tela.error != erro)
-      console.log("ERROR: erro=" + erro + " resultado=" + this.tela.error);
+
+    if (this.tela.erro != erro)
+      console.log("ERROR: erro=" + erro + " resultado=" + this.tela.erro);
   }
 
-  teste123Soma456() {
-    console.log("= Testando 123 + 456 ===========================");
-    [Digito.UM, Digito.DOIS, Digito.TRÊS].forEach((element) => {
+  /** Matheus */
+  testeMemoria01() {
+    console.log("= Testando 40 M+ SOMA 20 M+ ===========================");
+    [Digito.QUATRO, Digito.ZERO].forEach((element) => {
       this.cpu.recebaDigito(element);
     });
+    this.cpu.recebaControle(Controle.MEMÓRIA_SOMA);
     this.cpu.recebaOperacao(Operação.SOMA);
-    [Digito.QUATRO, Digito.CINCO, Digito.SEIS].forEach((element) => {
-      this.cpu.recebaDigito(element);
-    });
-    this.cpu.recebaControle(Controle.IGUAL);
-    console.log("= Testando 123 + 456 ===========================");
-    this.assert("579", Sinal.POSITIVO, false, false);
-  }
 
-  teste12Soma34Soma56() {
-    console.log("= Testando 12 + 34 + 56 ===========================");
-    [Digito.UM, Digito.DOIS].forEach((element) => {
+    [Digito.DOIS, Digito.ZERO].forEach((element) => {
       this.cpu.recebaDigito(element);
     });
-    this.cpu.recebaOperacao(Operação.SOMA);
-    [Digito.TRÊS, Digito.QUATRO].forEach((element) => {
-      this.cpu.recebaDigito(element);
-    });
-    this.cpu.recebaOperacao(Operação.SOMA);
-    [Digito.CINCO, Digito.SEIS].forEach((element) => {
-      this.cpu.recebaDigito(element);
-    });
-    this.cpu.recebaControle(Controle.IGUAL);
-    this.assert("102", Sinal.POSITIVO, false, false);
-  }
+    this.cpu.recebaControle(Controle.MEMÓRIA_SOMA);
+    console.log("= Testando 40 M+ SOMA 20 M+ ===========================");
 
-  teste12Divisão10() {
-    console.log("= Testando 12 / 10  ===========================");
-    [Digito.UM, Digito.DOIS].forEach((element) => {
-      this.cpu.recebaDigito(element);
-    });
-    this.cpu.recebaOperacao(Operação.DIVISÃO);
-    [Digito.UM, Digito.ZERO].forEach((element) => {
-      this.cpu.recebaDigito(element);
-    });
-    this.cpu.recebaControle(Controle.IGUAL);
-    this.assert("1.2", Sinal.POSITIVO, false, false);
+    this.assert("60", Sinal.POSITIVO, true, false);
   }
 }

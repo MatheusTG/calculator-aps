@@ -5,10 +5,13 @@ export class TelaB5 implements Tela {
   sinal: boolean;
   memoria: boolean;
 
+  erro: boolean;
+
   constructor() {
     this.lista = ["0"];
     this.sinal = false;
     this.memoria = false;
+    this.erro = false;
   }
   mostreSeparadorDecimal(): void {
     this.lista.push(".");
@@ -22,7 +25,7 @@ export class TelaB5 implements Tela {
     this.memoria = !this.memoria;
   }
   mostreErro(): void {
-    throw new Error("Method not implemented.");
+    this.erro = true;
   }
 
   mostre(digito: Digito): void {

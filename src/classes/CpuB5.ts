@@ -42,13 +42,15 @@ export class CpuB5 implements Cpu {
     this.operando = "";
     this.limparAoDigitar = false;
     this.limparMemoria = false;
-    if (this.memoria.digitos.length) this.tela?.mostreMemoria();
+    // if (this.memoria.digitos.length && this.memoria.digitos[0] !== 0) {
+    //   console.log("teste");
+    //   this.tela?.mostreMemoria();
+    // }
   }
 
   private calcularResultado() {
     const num1 = this.primeiroNumero.paraNumero();
     const num2 = this.segundoNumero.paraNumero();
-    console.log(num1, this.operando, num2);
 
     if (!this.operando) {
       this.resultado = this.primeiroNumero;
@@ -83,7 +85,6 @@ export class CpuB5 implements Cpu {
 
   private igual() {
     this.calcularResultado();
-    console.log(8888888, this.resultado.paraNumero());
 
     this.tela?.limpe();
     this.ePrimeiroNumero = true;
@@ -121,8 +122,9 @@ export class CpuB5 implements Cpu {
       this.limpar();
       this.valorParaPrimeiroNumero(this.resultado);
 
-      if (!!this.resultado && !this.memoria.digitos.length)
+      if (!!this.resultado && !this.memoria.digitos.length) {
         this.tela?.mostreMemoria();
+      }
     } else {
       const resultado = eval(
         `${this.memoria.paraNumero()} 
@@ -130,8 +132,9 @@ export class CpuB5 implements Cpu {
          ${this.primeiroNumero?.paraNumero()}`
       );
 
-      if (resultado !== 0 && !this.memoria.digitos.length)
+      if (resultado !== 0 && !this.memoria.digitos.length) {
         this.tela?.mostreMemoria();
+      }
       this.memoria.deNumero(resultado);
       this.resetarNumeros = true;
     }
