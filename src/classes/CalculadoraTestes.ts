@@ -1,41 +1,6 @@
-import {
-  Controle,
-  Cpu,
-  Digito,
-  Operação,
-  Sinal,
-  Tela,
-} from "../@types/calculadora";
+import { Controle, Cpu, Digito, Operação, Sinal } from "../@types/calculadora";
 
 import { TelaB5 } from "./TelaB5";
-
-export class TestadorTela {
-  private tela: Tela;
-
-  constructor(tela: Tela) {
-    this.tela = tela;
-  }
-
-  testeTodosNúmeros() {
-    this.tela.limpe();
-    console.log("= Testando todos os dígitos ===========================");
-    Object.keys(Digito).forEach((element) => {
-      if (Number(element)) this.tela.mostre(Number(element));
-    });
-  }
-
-  testeTodosSímbolo() {
-    this.tela.limpe();
-    console.log("= Testando todos os símbolos ===========================");
-    for (let i = 0; i < 8; i++) {
-      this.tela.mostre(Digito.OITO);
-      this.tela.mostreSeparadorDecimal();
-    }
-    this.tela.mostreMemoria();
-    this.tela.mostreSinal(Sinal.NEGATIVO);
-    this.tela.mostreErro();
-  }
-}
 
 export class TestadorCpu {
   private cpu: Cpu;
@@ -102,6 +67,7 @@ export class TestadorCpu {
       console.log("ERROR: erro=" + erro + " resultado=" + this.tela.erro);
   }
 
+  /** Amanda Soares */
   testeSoma() {
     console.log("= Testando 55 SOMA 20 ===========================");
     [Digito.CINCO, Digito.CINCO].forEach((element) => {
@@ -118,6 +84,7 @@ export class TestadorCpu {
     this.assert("75", Sinal.POSITIVO, false, false);
   }
 
+  /** Matheus Teodoro */
   testeSubtraçãoSinal() {
     console.log("= Testando 30 SUBTRAÇÃO 52 ===========================");
     [Digito.TRÊS, Digito.ZERO].forEach((element) => {
@@ -134,6 +101,7 @@ export class TestadorCpu {
     this.assert("22", Sinal.NEGATIVO, false, false);
   }
 
+  /** Amanda Soares */
   testeMultiplicação() {
     console.log("= Testando 12 MULTIPLICAÇÃO 11 ===========================");
     [Digito.UM, Digito.DOIS].forEach((element) => {
@@ -150,6 +118,7 @@ export class TestadorCpu {
     this.assert("132", Sinal.POSITIVO, false, false);
   }
 
+  /** Matheus Teodoro */
   testeDivisão() {
     console.log("= Testando 10 DIVISÃO 50 ===========================");
     [Digito.UM, Digito.ZERO].forEach((element) => {
@@ -166,6 +135,7 @@ export class TestadorCpu {
     this.assert("0.2", Sinal.POSITIVO, false, false);
   }
 
+  /** Amanda Soares */
   testeRaizQuadrada121() {
     console.log("= Testando RAIZ_QUADRADA 121 ===========================");
     [Digito.UM, Digito.DOIS, Digito.UM].forEach((element) => {
@@ -177,6 +147,7 @@ export class TestadorCpu {
     this.assert("11", Sinal.POSITIVO, false, false);
   }
 
+  /** Matheus Teodoro */
   testePorcentual() {
     console.log(
       "= Testando CEM DIVISÃO VINTE PORCENTUAL ==========================="
@@ -197,6 +168,7 @@ export class TestadorCpu {
     this.assert("500", Sinal.POSITIVO, false, false);
   }
 
+  /** Amanda Soares */
   testeMultiplicaçãoComSeparadorDecimal() {
     console.log(
       "= Testando MULTIPLICAÇÃO COM SEPARADOR DECIMAL ==========================="
@@ -222,7 +194,7 @@ export class TestadorCpu {
     this.assert("7.5", Sinal.POSITIVO, false, false);
   }
 
-  /** Matheus */
+  /** Matheus Teodoro */
   testeMemoria01() {
     console.log("= Testando 40 M+ SOMA 20 M+ ===========================");
     [Digito.QUATRO, Digito.ZERO].forEach((element) => {
@@ -240,7 +212,7 @@ export class TestadorCpu {
     this.assert("60", Sinal.POSITIVO, true, false);
   }
 
-  /** Matheus */
+  /** Amanda Soares */
   testeMemoria02() {
     console.log(
       "= Testando 40 M+ SOMA 20 M+ IGUAL ==========================="
@@ -263,6 +235,7 @@ export class TestadorCpu {
     this.assert("60", Sinal.POSITIVO, true, false);
   }
 
+  /** Matheus Teodoro */
   testeMemoriaSubtração() {
     console.log("= Testando MEMÓRIA SUBTRAÇÃO ===========================");
     [Digito.QUATRO].forEach((element) => {
