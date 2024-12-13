@@ -65,7 +65,7 @@ export class CpuB5 implements Cpu {
 
     this.tela?.mostreSinal(this.primeiroNumero.sinal);
     this.primeiroNumero.digitos.forEach((valor, index) => {
-      this.tela?.mostre(valor);
+      this.tela?.mostre(Number(valor));
       if (this.primeiroNumero.posiçãoSeparadorDecimal === index + 1) {
         this.tela?.mostreSeparadorDecimal();
       }
@@ -170,9 +170,15 @@ export class CpuB5 implements Cpu {
 
   private calcularRaizQuadrada() {
     this.tela?.limpe();
-    this.tela?.mostre(
-      eval(`${Number(this.primeiroNumero.digitos.join(""))}**0.5`)
+    const resultado = eval(
+      `${Number(this.primeiroNumero.digitos.join(""))}**0.5`
     );
+    const resultadoConvertido = new NumeroB5();
+
+    if (typeof resultado === "number") {
+      resultadoConvertido.deNumero(resultado);
+      this.valorParaPrimeiroNumero(resultadoConvertido);
+    }
   }
 
   private calcularPorcentual() {
@@ -207,13 +213,13 @@ export class CpuB5 implements Cpu {
       }
       if (this.limparAoDigitar) {
         this.tela?.limpe();
-        this.tela?.mostreSinal(0);
+        // this.tela?.mostreSinal(0);
         this.limparAoDigitar = false;
       }
 
       this.limparMemoria = false;
 
-      this.tela?.mostre(digito);
+      this.tela?.mostre(Number(digito));
       if (this.ePrimeiroNumero) {
         this.primeiroNumero.digitos.push(digito);
       } else {

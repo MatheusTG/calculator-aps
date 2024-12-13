@@ -51,10 +51,10 @@ export class CalculadoraIHC {
     this.Teclado = new TecladoB5();
     this.Teclado.definaCpu(this.cpu);
 
-    // @ts-ignore
-    const testador = new TestadorCpu(this.cpu, this.Tela);
+    // // @ts-ignore
+    // const testador = new TestadorCpu(this.cpu, this.Tela);
 
-    testador.executeTodosTestes();
+    // testador.executeTodosTestes();
 
     this.bindEvents();
     this.addKeyEvents();

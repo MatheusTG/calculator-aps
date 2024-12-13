@@ -14,6 +14,7 @@ export class TelaB5 implements Tela {
     this.erro = false;
   }
   mostreSeparadorDecimal(): void {
+    console.log("teste");
     this.lista.push(".");
   }
   mostreSinal(sinal: Sinal): void {
@@ -29,6 +30,7 @@ export class TelaB5 implements Tela {
   }
 
   mostre(digito: Digito): void {
+    console.log(digito);
     this.lista.push(digito);
   }
 
