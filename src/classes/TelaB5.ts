@@ -30,7 +30,6 @@ export class TelaB5 implements Tela {
   }
 
   mostre(digito: Digito): void {
-    console.log(digito);
     this.lista.push(digito);
   }
 
